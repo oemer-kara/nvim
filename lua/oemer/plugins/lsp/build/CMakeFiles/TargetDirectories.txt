@@ -1,0 +1,3 @@
+C:/Users/okara/AppData/Local/nvim/lua/oemer/plugins/lsp/build/CMakeFiles/MyProject.dir
+C:/Users/okara/AppData/Local/nvim/lua/oemer/plugins/lsp/build/CMakeFiles/edit_cache.dir
+C:/Users/okara/AppData/Local/nvim/lua/oemer/plugins/lsp/build/CMakeFiles/rebuild_cache.dir
