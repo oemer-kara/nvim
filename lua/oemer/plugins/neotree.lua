@@ -12,6 +12,8 @@ return {
 		{ "<C-e>", ":Neotree toggle float<CR>", silent = true, desc = "Float File Explorer" },
 	},
 	config = function()
+		vim.g.loaded_netrw = 1
+		vim.g.loaded_netrwPlugin = 1
 		require("neo-tree").setup({
 			close_if_last_window = true,
 			popup_border_style = "single",
@@ -51,6 +53,7 @@ return {
 				},
 			},
 			window = {
+				auto_open = false,
 				position = "float",
 				width = 35,
 			},

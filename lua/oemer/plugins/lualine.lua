@@ -58,7 +58,11 @@ return {
 					"progress",
 				},
 				lualine_y = { "buffers" },
-				lualine_z = {},
+				lualine_z = {
+					function()
+						return os.date("%d-%m-%Y | %H:%M")
+					end,
+				},
 			},
 			inactive_sections = {
 				lualine_a = {},
