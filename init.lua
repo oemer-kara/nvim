@@ -1,2 +1,2 @@
-require("oemer.core")
-require("oemer.lazy")
+require("core")
+require("lazy_config")

@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Users/okara/AppData/Local/nvim/lua/oemer/plugins/lsp/build",
-  "command": "g++   -std=gnu++17 -o CMakeFiles\\MyProject.dir\\main.cpp.obj -c C:\\Users\\okara\\AppData\\Local\\nvim\\lua\\oemer\\plugins\\lsp\\main.cpp",
-  "file": "C:/Users/okara/AppData/Local/nvim/lua/oemer/plugins/lsp/main.cpp",
-  "output": "CMakeFiles/MyProject.dir/main.cpp.obj"
-}
-]
