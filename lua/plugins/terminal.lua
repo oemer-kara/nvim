@@ -63,7 +63,7 @@ return {
 		end
 		local function get_module_name()
 			local input = vim.fn.input({
-				prompt = "What would you like to build? ([w]in_interface, [k]obot_1_0, [a]rkasoft_common): ",
+				prompt = "What module would you like to test? ([w]in_interface, [k]obot_1_0, [a]rkasoft_common): ",
 			})
 
 			local module_map = {
@@ -76,6 +76,7 @@ return {
 		end
 
 		local function run_build()
+			vim.cmd("cclose")
 			local Terminal = require("toggleterm.terminal").Terminal
 			local build_term = Terminal:new({
 				cmd = "cmd.exe /k " .. CONSTANTS.CMDER_PATH,
@@ -152,7 +153,9 @@ return {
 			-- Start checking for build completion
 			vim.defer_fn(handle_build_result, 100)
 		end
+
 		local function run_test()
+			vim.cmd("cclose")
 			local module = get_module_name()
 			if not module then
 				vim.notify("Invalid module selection", vim.log.levels.ERROR)
@@ -182,7 +185,6 @@ return {
 			local function find_test_failure()
 				local buffer = vim.api.nvim_buf_get_lines(test_term.bufnr, 0, -1, false)
 				for _, line in ipairs(buffer) do
-					-- Look for the file path and line number in assert failures
 					local file_path, line_num = line:match("([^:]+):(%d+) error: Assert statement")
 					if file_path and line_num then
 						return file_path, line_num
@@ -194,36 +196,30 @@ return {
 			-- Function to handle the test result
 			local function handle_test_result()
 				if not is_test_complete() then
-					-- Check again in 100ms if test isn't complete
 					vim.defer_fn(handle_test_result, 100)
 					return
 				end
 
 				local file_path, line_num = find_test_failure()
 				if file_path and line_num then
-					-- Ask if user wants to jump to the error location
 					vim.ui.input({
 						prompt = "Test failed. Jump to error location? (y/n): ",
 					}, function(input)
 						if input and input:lower() == "y" then
-							-- First, focus the leftmost window (where we want the code)
+							-- Focus the leftmost window
 							vim.cmd("wincmd h")
-
 							-- Open the file in the left window
 							vim.cmd("edit " .. file_path)
 							vim.cmd(":" .. line_num)
-							vim.cmd("normal! zz") -- Center the view on the error line
-
-							-- Move terminal to the right if it's not already there
-							vim.cmd("wincmd p") -- Go to previous window (terminal)
-							vim.cmd("wincmd L") -- Move it to the far right
-
+							vim.cmd("normal! zz")
+							-- Ensure terminal stays on the right
+							vim.cmd("wincmd p")
+							vim.cmd("wincmd L")
 							-- Focus back on the code window
 							vim.cmd("wincmd h")
 						end
 					end)
 				else
-					-- If all tests passed, show a message
 					vim.notify("All tests passed!", vim.log.levels.INFO)
 				end
 			end
@@ -234,17 +230,22 @@ return {
 				existing_term:close()
 			end
 
-			-- Setup initial layout
-			test_term:toggle() -- Open the terminal
-			vim.cmd("wincmd L") -- Move terminal to far right
-			vim.cmd("wincmd h") -- Focus back to the left window
+			-- Open new terminal and set up layout
+			test_term:toggle()
 
-			-- Run the test command in the terminal
-			test_term:send("cd " .. CONSTANTS.BUILD_DIR)
-			test_term:send("cbuild -v test " .. module)
+			-- Make sure terminal is properly initialized before sending commands
+			vim.defer_fn(function()
+				-- Move terminal to the right
+				vim.cmd("wincmd L")
 
-			-- Start checking for test completion
-			vim.defer_fn(handle_test_result, 100)
+				-- Send commands to terminal
+				test_term:send("cd " .. CONSTANTS.BUILD_DIR)
+				vim.defer_fn(function()
+					test_term:send("cbuild -v test " .. module)
+					-- Start checking for completion after sending the command
+					vim.defer_fn(handle_test_result, 500)
+				end, 100)
+			end, 100)
 		end
 
 		require("toggleterm").setup({
