@@ -25,7 +25,6 @@ return {
 						"neo-tree",
 						"Trouble",
 						"spectre_panel",
-						"toggleterm",
 					},
 					winbar = {},
 				},
@@ -44,6 +43,12 @@ return {
 					{
 						"filename",
 						path = 1, -- 2 for full path
+						fmt = function(str)
+							if str:match("toggleterm") then
+								return "Terminal"
+							end
+							return str
+						end,
 						symbols = {
 							modified = "  ",
 							readonly = "  ",

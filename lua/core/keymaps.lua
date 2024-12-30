@@ -41,7 +41,13 @@ map("n", "<C-s>", ":w<CR>", { desc = "Save file" })
 map("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 map("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<leader>ls", ":ls<CR>", { desc = "List all buffers" })
-map("n", "<C-q>", ":bdelete<CR>", { desc = "Delete current buffer" })
+map("n", "<C-q>", function()
+	if vim.bo.buftype == "terminal" then
+		vim.cmd("bd!")
+	else
+		vim.cmd("bd")
+	end
+end, { desc = "Delete current buffer" })
 
 -----------------------------------------------------------
 -- Editing Enhancements
@@ -89,7 +95,12 @@ map("n", "<leader>da", "ggVGd", { desc = "Delete entire buffer" })
 
 local function quickfix_next_or_first()
 	local qflist = vim.fn.getqflist()
-	if #qflist == 1 then
+	if #qflist == 0 then
+		return
+	end
+
+	local curr_idx = vim.fn.getqflist({ idx = 0 }).idx
+	if curr_idx == #qflist then
 		vim.cmd("cfirst")
 	else
 		vim.cmd("cnext")
@@ -98,7 +109,12 @@ end
 
 local function quickfix_prev_or_last()
 	local qflist = vim.fn.getqflist()
-	if #qflist == 1 then
+	if #qflist == 0 then
+		return
+	end
+
+	local curr_idx = vim.fn.getqflist({ idx = 0 }).idx
+	if curr_idx == 1 then
 		vim.cmd("clast")
 	else
 		vim.cmd("cprevious")
@@ -109,11 +125,23 @@ vim.keymap.set(
 	"n",
 	"<A-j>",
 	quickfix_next_or_first,
-	{ desc = "Next quickfix item or first", noremap = true, silent = true }
+	{ desc = "Next quickfix item or wrap to first", noremap = true, silent = true }
 )
+
 vim.keymap.set(
 	"n",
 	"<A-k>",
 	quickfix_prev_or_last,
-	{ desc = "Previous quickfix item or last", noremap = true, silent = true }
+	{ desc = "Previous quickfix item or wrap to last", noremap = true, silent = true }
 )
+
+vim.keymap.set("n", "<C-c>", function()
+	local chan = vim.b.terminal_job_id
+	if chan then
+		vim.cmd("startinsert")
+		vim.fn.chansend(chan, "\003")
+		local ctrlc = vim.api.nvim_replace_termcodes("<C-c>", true, true, true)
+		vim.fn.chansend(chan, ctrlc)
+		vim.fn.chansend(chan, string.char(3))
+	end
+end, { noremap = true, silent = true })

@@ -27,38 +27,46 @@ return {
 			local end_line = vim.api.nvim_buf_line_count(buffer)
 			local qf_list = {}
 
+			local patterns = {
+				-- Standard error pattern
+				{ pattern = "([A-Za-z]:[^:]+):(%d+):?(%d*):?%s*(error):%s*(.+)", type = "E" },
+				-- Warning pattern
+				{ pattern = "([A-Za-z]:[^:]+):(%d+):?(%d*):?%s*(warning):%s*(.+)", type = "W" },
+				-- Make/MSBuild pattern
+				{ pattern = "([^%(]+)%((%d+),(%d+)%): (error|warning) (%w+): (.+)", type = "E" },
+				-- Stack trace pattern
+				{ pattern = "%s*at%s+[^%(]+%(([^:]+):(%d+):(%d+)%)", type = "I" },
+				-- Fallback error pattern
+				{ pattern = "error:", type = "E" },
+			}
+
 			for line_num = 1, end_line do
 				local line = vim.api.nvim_buf_get_lines(buffer, line_num - 1, line_num, false)[1] or ""
 
-				if line:find("error:") then
-					local entry = {
-						filename = "",
-						lnum = line_num,
-						text = line,
-						type = "E",
-					}
-
-					local file_pattern = "([A-Za-z]:[^:]+):(%d+)"
-					local filename, line_number = line:match(file_pattern)
-					if filename and line_number then
-						entry.filename = filename
-						entry.lnum = tonumber(line_number)
+				for _, pattern in ipairs(patterns) do
+					local matches = { line:match(pattern.pattern) }
+					if #matches > 0 then
+						local entry = {
+							filename = matches[1] or "",
+							lnum = tonumber(matches[2]) or line_num,
+							col = tonumber(matches[3]) or 0,
+							text = matches[5] or line,
+							type = pattern.type,
+						}
+						table.insert(qf_list, entry)
+						break
 					end
-
-					table.insert(qf_list, entry)
 				end
 			end
-
-			vim.cmd("cclose")
 
 			if #qf_list > 0 then
 				vim.fn.setqflist({}, "r")
 				vim.fn.setqflist(qf_list, "r")
-
-				vim.cmd("copen " .. math.min(#qf_list, 20))
+				vim.cmd("copen " .. math.min(#qf_list, 10))
 				vim.cmd("wincmd p")
 				return true
 			end
+
 			return false
 		end
 		local function get_module_name()
