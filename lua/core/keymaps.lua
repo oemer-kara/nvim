@@ -67,6 +67,8 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 map("n", "<leader>d", '"_d', { desc = "Delete without yanking" })
 map("v", "<leader>d", '"_d', { desc = "Delete selection without yanking" })
 map("v", "<leader>p", '"_dP', { desc = "Paste over selection without yanking" })
+map("n", "]]", "]]zz", { noremap = true, silent = true })
+map("n", "[[", "[[zz", { noremap = true, silent = true })
 
 -----------------------------------------------------------
 -- Split Management
@@ -145,3 +147,5 @@ vim.keymap.set("n", "<C-c>", function()
 		vim.fn.chansend(chan, string.char(3))
 	end
 end, { noremap = true, silent = true })
+
+vim.keymap.set("i", "<C-h>", "<C-w>", { noremap = true, silent = true })

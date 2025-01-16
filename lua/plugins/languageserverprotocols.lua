@@ -8,9 +8,7 @@ return {
 				cmd = {
 					"clangd",
 					"--query-driver=**/mingw64/bin/gcc.exe,**/mingw64/bin/g++.exe",
-					"--header-insertion=iwyu",
 					"--all-scopes-completion",
-					"--suggest-missing-includes",
 					"--offset-encoding=utf-16",
 				},
 				capabilities = capabilities,

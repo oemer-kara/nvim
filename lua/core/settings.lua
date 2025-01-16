@@ -1,7 +1,6 @@
 -----------------------------------------------------------
 -- Performance Optimizations
 -----------------------------------------------------------
-vim.opt.lazyredraw = true -- Prevent screen redrawing during macros execution, improving performance
 vim.opt.ttyfast = true -- Indicates a fast terminal connection, enables smoother scrolling
 vim.opt.synmaxcol = 200 -- Limit syntax highlighting to first 200 columns to improve performance in large files
 
