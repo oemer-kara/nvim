@@ -71,13 +71,14 @@ return {
 		end
 		local function get_module_name()
 			local input = vim.fn.input({
-				prompt = "What module would you like to test? ([w]in_interface, [k]obot_1_0, [a]rkasoft_common): ",
+				prompt = "What module would you like to test? ([w]in_interface, [k]obot_1_0, [b]ase, [a]ll): ",
 			})
 
 			local module_map = {
 				w = "win_interface",
 				k = "kobot_1_0",
-				a = "arkasoft_common",
+				b = "base",
+				a = "",
 			}
 
 			return module_map[input:lower()]
