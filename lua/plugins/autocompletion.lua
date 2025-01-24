@@ -12,7 +12,6 @@ return {
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
-
 			cmp.setup({
 				snippet = {
 					expand = function(args)
@@ -42,7 +41,10 @@ return {
 							fallback()
 						end
 					end, { "i", "s" }),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<CR>"] = cmp.mapping.confirm({
+						behavior = cmp.ConfirmBehavior.Replace,
+						select = false,
+					}),
 					["<C-Space>"] = cmp.mapping.complete(),
 					["<C-e>"] = cmp.mapping.abort(),
 					["<C-d>"] = cmp.mapping.scroll_docs(4),
@@ -67,7 +69,6 @@ return {
 				},
 			})
 
-			-- Use buffer source for `/` and `?`
 			cmp.setup.cmdline({ "/", "?" }, {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = {
@@ -75,7 +76,6 @@ return {
 				},
 			})
 
-			-- Use cmdline & path source for ':'
 			cmp.setup.cmdline(":", {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = cmp.config.sources({

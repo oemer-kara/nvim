@@ -2,7 +2,7 @@ return {
 	"neoscroll.nvim", -- Add the plugin name
 	config = function()
 		require("neoscroll").setup({
-			mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "zt", "zz", "zb" },
+			mappings = { "<C-u>", "<C-d>", "zt", "zz", "zb" },
 			hide_cursor = true,
 			stop_eof = true,
 			respect_scrolloff = false,
@@ -16,12 +16,6 @@ return {
 			end,
 			["<C-d>"] = function()
 				neoscroll.ctrl_d({ duration = 30 })
-			end,
-			["<C-b>"] = function()
-				neoscroll.ctrl_b({ duration = 50 })
-			end,
-			["<C-f>"] = function()
-				neoscroll.ctrl_f({ duration = 30 })
 			end,
 			["zt"] = function()
 				neoscroll.zt({ duration = 40 })
