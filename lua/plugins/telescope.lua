@@ -9,6 +9,7 @@ return {
 	config = function()
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
+		local sorters = require("telescope.sorters")
 		local transform_mod = require("telescope.actions.mt").transform_mod
 		local builtin = require("telescope.builtin")
 
@@ -28,11 +29,6 @@ return {
 
 		telescope.setup({
 			defaults = {
-				path_display = {
-					"smart",
-					shorten = { len = 3, exclude = { -2, -1 } },
-				},
-
 				preview = {
 					treesitter = true,
 					check_mime_type = true,
@@ -56,7 +52,13 @@ return {
 					},
 				},
 
-				borderchars = { "─", "│", "─", "│", "┌", "┐", "└", "┘" },
+				borderchars = { "━", "┃", "━", "┃", "┏", "┓", "┗", "┛" },
+				highlight = {
+					preview = "Normal",
+					prompt = "TelescopePromptPrefix",
+					results = "TelescopeNormal",
+					border = "TelescopeBorder",
+				},
 				prompt_prefix = "→ ",
 				selection_caret = "▶ ",
 				entry_prefix = "● ",
@@ -64,8 +66,11 @@ return {
 			},
 
 			pickers = {
+				lsp_dynamic_workspace_symbols = {
+					sorter = sorters.get_fzy_sorter(),
+				},
 				find_files = {
-					theme = "dropdown",
+					theme = "ivy",
 					previewer = false,
 					hidden = true,
 					find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
@@ -77,10 +82,12 @@ return {
 					end,
 				},
 				git_commits = {
-					theme = "dropdown",
+					theme = "ivy",
 				},
 				lsp_document_symbols = {
-					theme = "dropdown",
+					theme = "ivy",
+					previewer = false,
+					ignore_unnamed_buffers = false,
 					symbols = {
 						"Class",
 						"Function",
@@ -96,7 +103,9 @@ return {
 					},
 				},
 				lsp_workspace_symbols = {
-					theme = "dropdown",
+					theme = "ivy",
+					previewer = false,
+					ignore_unnamed_buffers = false,
 					symbols = {
 						"Class",
 						"Function",

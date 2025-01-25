@@ -17,15 +17,6 @@ return {
 			["<C-d>"] = function()
 				neoscroll.ctrl_d({ duration = 30 })
 			end,
-			["zt"] = function()
-				neoscroll.zt({ duration = 40 })
-			end,
-			["zz"] = function()
-				neoscroll.zz({ duration = 40 })
-			end,
-			["zb"] = function()
-				neoscroll.zb({ duration = 40 })
-			end,
 		}
 		local modes = { "n", "v", "x" }
 		for key, func in pairs(keymap) do
