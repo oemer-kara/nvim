@@ -5,6 +5,7 @@ return {
 		"nvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-tree/nvim-web-devicons",
+		"nvim-telescope/telescope-ui-select.nvim", -- Modern UI selector
 	},
 	config = function()
 		local telescope = require("telescope")
@@ -32,6 +33,7 @@ return {
 				preview = {
 					treesitter = true,
 					check_mime_type = true,
+					timeout = 100, -- Faster preview updates
 				},
 
 				mappings = {
@@ -45,47 +47,57 @@ return {
 						["<M-v>"] = actions.select_vertical,
 						["<C-x>"] = actions.delete_buffer,
 						["<Esc>"] = custom_actions.close_telescope,
+						["<C-s>"] = actions.toggle_selection + actions.move_selection_next, -- Multi-select
 					},
 					n = {
 						["q"] = actions.close,
 						["<C-c>"] = actions.close,
+						["<C-s>"] = actions.toggle_selection + actions.move_selection_next, -- Multi-select
 					},
 				},
 
-				borderchars = { "━", "┃", "━", "┃", "┏", "┓", "┗", "┛" },
-				highlight = {
-					preview = "Normal",
-					prompt = "TelescopePromptPrefix",
-					results = "TelescopeNormal",
-					border = "TelescopeBorder",
+				borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" }, -- Cleaner borders
+				layout_strategy = "horizontal", -- Modern layout
+				layout_config = {
+					horizontal = {
+						prompt_position = "top",
+						preview_width = 0.6,
+						results_width = 0.8,
+					},
 				},
-				prompt_prefix = "→ ",
-				selection_caret = "▶ ",
-				entry_prefix = "● ",
-				multi_icon = "☑ ",
+				highlight = {
+					preview = "TelescopePreviewNormal",
+					prompt = "TelescopePromptPrefix",
+					results = "TelescopeResultsNormal",
+					border = "TelescopeBorder",
+					cursor = "TelescopeCursor", -- Custom cursor highlight
+				},
+				prompt_prefix = "🔍 ", -- Modern icon
+				selection_caret = "❯ ",
+				entry_prefix = "  ",
+				multi_icon = "✓ ", -- Modern multi-select icon
+				color_devicons = true, -- Colorful icons
+				file_ignore_patterns = { "node_modules", ".git" }, -- Ignore unnecessary files
 			},
 
 			pickers = {
-				lsp_dynamic_workspace_symbols = {
-					sorter = sorters.get_fzy_sorter(),
-				},
 				find_files = {
-					theme = "ivy",
-					previewer = false,
+					theme = "dropdown", -- Modern dropdown theme
+					previewer = true,
 					hidden = true,
 					find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
 				},
 				live_grep = {
-					theme = "ivy",
+					theme = "dropdown",
 					additional_args = function()
 						return { "--hidden", "-g", "!.git" }
 					end,
 				},
 				git_commits = {
-					theme = "ivy",
+					theme = "cursor", -- Minimalist cursor theme
 				},
 				lsp_document_symbols = {
-					theme = "ivy",
+					theme = "dropdown",
 					previewer = false,
 					ignore_unnamed_buffers = false,
 					symbols = {
@@ -103,7 +115,7 @@ return {
 					},
 				},
 				lsp_workspace_symbols = {
-					theme = "ivy",
+					theme = "dropdown",
 					previewer = false,
 					ignore_unnamed_buffers = false,
 					symbols = {
@@ -129,10 +141,14 @@ return {
 					override_file_sorter = true,
 					case_mode = "smart_case",
 				},
+				["ui-select"] = {
+					theme = "dropdown", -- Modern dropdown for UI select
+				},
 			},
 		})
 
 		telescope.load_extension("fzf")
+		telescope.load_extension("ui-select") -- Load UI select extension
 
 		local keymap = vim.keymap
 		keymap.set("n", "<C-f>", "<cmd>Telescope find_files<cr>", { desc = "[f]iles" })

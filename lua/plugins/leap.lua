@@ -3,12 +3,33 @@ return {
 	dependencies = { "tpope/vim-repeat" },
 	config = function()
 		require("leap").setup({
-			-- Default settings for Leap
-			safe_labels = {}, -- Disable safe labels for more direct targeting
-			labels = { "f", "d", "s", "j", "k", "l", "a", "g", "h", "n" }, -- Custom labels for faster targeting
-			equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }, -- Treat certain characters as equivalent
-			max_phase_one_targets = 10, -- Limit the number of targets shown in the first phase
+			-- Enable direct targeting (single keystroke jumps)
+			safe_labels = {}, -- Disable safe labels to allow direct targeting
+			labels = {
+				"a",
+				"s",
+				"d",
+				"w",
+				"q",
+				"e",
+				"r",
+				"f",
+				"j",
+				"k",
+				"l",
+				"h",
+				"n",
+				"m",
+				"v",
+				"c",
+				"1",
+				"2",
+				"3",
+				"4",
+				"5",
+			}, -- Add more labels for multi-character targeting
 			highlight_unlabeled_phase_one_targets = true, -- Highlight unlabeled targets in the first phase
+			max_phase_one_targets = 50, -- Increase the number of targets shown in the first phase
 			case_sensitive = false, -- Case-insensitive searching
 			special_keys = {
 				repeat_search = "<enter>", -- Key to repeat the last search
@@ -23,13 +44,14 @@ return {
 		-- Add default mappings
 		require("leap").add_default_mappings()
 
-		-- Enhanced keybindings for more comfort
-		vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward)", { desc = "Leap forward" })
-		vim.keymap.set({ "n", "x", "o" }, "S", "<Plug>(leap-backward)", { desc = "Leap backward" })
-		vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-from-window)", { desc = "Leap from window" })
+		-- Enhanced keybindings for single keystroke jumps
+		vim.keymap.set({ "n", "x", "o" }, "s", function()
+			require("leap").leap({ target_windows = { vim.fn.win_getid() } })
+		end, { desc = "Leap forward with single keystroke" })
 
-		-- Two-character search with space
-		vim.keymap.set({ "n", "x", "o" }, "<space>", "<Plug>(leap-cross-window)", { desc = "Leap cross-window" })
+		vim.keymap.set({ "n", "x", "o" }, "S", function()
+			require("leap").leap({ target_windows = { vim.fn.win_getid() }, backward = true })
+		end, { desc = "Leap backward with single keystroke" })
 
 		-- Configure highlight groups for better visibility
 		vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" }) -- Dim backdrop for better focus
