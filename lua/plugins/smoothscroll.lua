@@ -12,10 +12,10 @@ return {
 		local neoscroll = require("neoscroll")
 		local keymap = {
 			["<C-u>"] = function()
-				neoscroll.ctrl_u({ duration = 30 })
+				neoscroll.ctrl_u({ duration = 10 })
 			end,
 			["<C-d>"] = function()
-				neoscroll.ctrl_d({ duration = 30 })
+				neoscroll.ctrl_d({ duration = 10 })
 			end,
 		}
 		local modes = { "n", "v", "x" }

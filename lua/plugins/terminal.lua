@@ -116,7 +116,6 @@ return {
 
 				-- Build is complete, check for errors
 				if parse_terminal_errors() then
-					term:shutdown()
 					return
 				end
 
@@ -139,7 +138,6 @@ return {
 						run_term:send("cd " .. CONSTANTS.BUILD_DIR)
 						run_term:send(CONSTANTS.EXE_NAME .. ".exe")
 					else
-						term:shutdown()
 					end
 				end)
 			end
@@ -149,7 +147,7 @@ return {
 				or Terminal:new({
 					cmd = "cmd.exe /k " .. CONSTANTS.CMDER_PATH,
 					direction = "horizontal",
-					close_on_exit = true,
+					close_on_exit = false,
 				})
 
 			-- If the terminal already exists, toggle and send the build commands
@@ -249,13 +247,13 @@ return {
 			open_mapping = [[<c-\>]],
 			hide_numbers = true,
 			shade_filetypes = {},
-			shade_terminals = true,
-			shading_factor = 2,
+			shade_terminals = false,
+			shading_factor = 0,
 			start_in_insert = true,
 			insert_mappings = true,
 			persist_size = true,
 			direction = "horizontal",
-			close_on_exit = true,
+			close_on_exit = false,
 			shell = detect_terminal_shell(),
 			float_opts = {
 				border = "curved",
@@ -310,8 +308,8 @@ return {
 			{ "n", "<C-b>", run_build, "Run Build" },
 			{ "n", "<C-n>", run_test, "Run Test" },
 			{
-				"n",
-				"<leader>tk",
+				"t",
+				"<C-q>",
 				function()
 					local current_term = require("toggleterm.terminal").get(vim.v.count1)
 					if current_term then
