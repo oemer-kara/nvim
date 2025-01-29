@@ -1,37 +1,72 @@
 return {
-	"lukas-reineke/indent-blankline.nvim",
-	event = { "BufReadPre", "BufNewFile" },
-	main = "ibl",
+	"echasnovski/mini.indentscope",
+	version = false,
+	event = {
+		"BufReadPost",
+		"BufNewFile",
+		"BufWritePre",
+	},
 	opts = {
-		indent = {
-			char = "|", -- Use a lighter or more subtle character if preferred, e.g., "│" or "▏"
+		symbol = "▏",
+		draw = {
+			-- Fixed animation speed that's still smooth
+			animation = function()
+				return 10
+			end,
+			priority = 2,
 		},
-		scope = {
-			show_start = true, -- Show the start of the scope
-			show_end = true, -- Show the end of the scope
-			highlight = { "Function", "Label" }, -- Highlight groups for scope
-			char = "▏", -- Character to show for scope indicators
+		options = {
+			try_as_border = true,
+			border = "both",
+			indent_at_cursor = true,
+			responsive = true,
+			ignore_first_line = false,
 		},
-		exclude = {
-			filetypes = { -- Exclude certain filetypes from showing indent lines
-				"help",
-				"dashboard",
-				"neo-tree",
-				"Trouble",
-				"lazy",
-				"mason",
-			},
-			buftypes = { -- Exclude certain buffer types
-				"terminal",
-				"nofile",
-			},
-		},
-		whitespace = {
-			highlight = { "Whitespace", "NonText" }, -- Highlight groups for whitespace
-			remove_blankline_trail = true, -- Remove trailing whitespace on blank lines
+		-- Modern mappings for navigation
+		mappings = {
+			goto_top = "[i",
+			goto_bottom = "]i",
 		},
 	},
 	config = function(_, opts)
-		require("ibl").setup(opts)
+		require("mini.indentscope").setup(opts)
+
+		-- Modern highlight with transparency support
+		vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", {
+			fg = "#404040",
+			nocombine = true,
+		})
+
+		-- Exclude filetypes more elegantly
+		local ignore_filetypes = {
+			"help",
+			"alpha",
+			"dashboard",
+			"neo-tree",
+			"Trouble",
+			"trouble",
+			"lazy",
+			"mason",
+			"notify",
+			"toggleterm",
+			"lazyterm",
+		}
+
+		-- Auto disable for specific filetypes
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = ignore_filetypes,
+			callback = function()
+				vim.b.miniindentscope_disable = true
+			end,
+		})
+
+		-- Disable on these buffer types
+		vim.api.nvim_create_autocmd("BufEnter", {
+			callback = function()
+				if vim.bo.buftype ~= "" then
+					vim.b.miniindentscope_disable = true
+				end
+			end,
+		})
 	end,
 }

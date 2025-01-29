@@ -2,37 +2,39 @@ return {
 	"akinsho/toggleterm.nvim",
 	version = "*",
 	config = function()
+		-- Constants for paths and configurations
 		local CONSTANTS = {
 			BUILD_DIR = "C:\\Users\\okara\\Workspace\\Arkasoft\\arkasoft_main\\build",
 			EXE_NAME = "kobot_1_0",
 			CMDER_PATH = "C:\\tools\\Cmder\\vendor\\init.bat",
 		}
 
+		-- Check if a file exists
 		local function file_exists(path)
 			local f = io.open(path, "r")
 			if f then
 				f:close()
 				return true
-			else
-				return false
 			end
+			return false
 		end
 
+		-- Detect the terminal shell (Cmder or fallback to default)
 		local function detect_terminal_shell()
 			return file_exists(CONSTANTS.CMDER_PATH) and "cmd.exe /k " .. CONSTANTS.CMDER_PATH or vim.o.shell
 		end
 
+		-- Parse terminal errors and populate the quickfix list
 		local function parse_terminal_errors()
 			local buffer = vim.api.nvim_get_current_buf()
 			local lines = vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
 			local qf_list = {}
 
-			-- Join lines that might be broken in the middle
+			-- Join lines for multi-line error patterns
 			local full_text = table.concat(lines, " ")
 
-			-- Patterns for different error formats
+			-- Error patterns for different formats
 			local patterns = {
-				-- Format: filepath:line error: message
 				{
 					pattern = "([^:]+):(%d+)%s+error:%s*(.+)",
 					handler = function(filepath, lnum, msg)
@@ -44,7 +46,6 @@ return {
 						}
 					end,
 				},
-				-- Format: filepath:line:col: error: message
 				{
 					pattern = "(%g+):(%d+):(%d+): error: (.+)",
 					handler = function(filepath, lnum, col, msg)
@@ -59,15 +60,11 @@ return {
 				},
 			}
 
-			-- Try each pattern
+			-- Match patterns and populate the quickfix list
 			for _, format in ipairs(patterns) do
 				for capture1, capture2, capture3, capture4 in full_text:gmatch(format.pattern) do
-					local entry
-					if capture4 then -- It's the second pattern with 4 captures
-						entry = format.handler(capture1, capture2, capture3, capture4)
-					else -- It's the first pattern with 3 captures
-						entry = format.handler(capture1, capture2, capture3)
-					end
+					local entry = capture4 and format.handler(capture1, capture2, capture3, capture4)
+						or format.handler(capture1, capture2, capture3)
 					table.insert(qf_list, entry)
 				end
 			end
@@ -81,18 +78,26 @@ return {
 			return false
 		end
 
+		-- Run the build process
 		local function run_build()
-			vim.cmd("cclose")
+			vim.cmd("cclose") -- Close any open quickfix window
 			local Terminal = require("toggleterm.terminal").Terminal
 
-			-- Check if there is an existing horizontal terminal
-			local existing_term
+			-- Find an existing horizontal terminal or create a new one
+			local build_term
 			for _, term in pairs(require("toggleterm.terminal").get_all()) do
 				if term.direction == "horizontal" then
-					existing_term = term
+					build_term = term
 					break
 				end
 			end
+
+			build_term = build_term
+				or Terminal:new({
+					cmd = "cmd.exe /k " .. CONSTANTS.CMDER_PATH,
+					direction = "horizontal",
+					close_on_exit = false,
+				})
 
 			-- Function to check if the build is complete
 			local function is_build_complete(term)
@@ -105,7 +110,7 @@ return {
 				return false
 			end
 
-			-- Function to handle the build result
+			-- Handle build result (errors or success)
 			local function handle_build_result(term)
 				if not is_build_complete(term) then
 					vim.defer_fn(function()
@@ -114,12 +119,11 @@ return {
 					return
 				end
 
-				-- Build is complete, check for errors
 				if parse_terminal_errors() then
 					return
 				end
 
-				-- If no errors, prompt to run the executable
+				-- Prompt to run the executable if build is successful
 				vim.ui.input({
 					prompt = "Build successful. Run the executable? (y/n): ",
 				}, function(input)
@@ -134,23 +138,14 @@ return {
 						})
 
 						run_term:toggle()
-						vim.cmd("wincmd L") -- Move to far right
+						vim.cmd("wincmd L") -- Move to the far right
 						run_term:send("cd " .. CONSTANTS.BUILD_DIR)
 						run_term:send(CONSTANTS.EXE_NAME .. ".exe")
-					else
 					end
 				end)
 			end
 
-			-- Use the existing terminal or create a new one
-			local build_term = existing_term
-				or Terminal:new({
-					cmd = "cmd.exe /k " .. CONSTANTS.CMDER_PATH,
-					direction = "horizontal",
-					close_on_exit = false,
-				})
-
-			-- If the terminal already exists, toggle and send the build commands
+			-- Start the build process
 			build_term:toggle()
 			build_term:send("cd " .. CONSTANTS.BUILD_DIR)
 			build_term:send("cbuild -v build " .. CONSTANTS.EXE_NAME)
@@ -161,9 +156,10 @@ return {
 			end, 100)
 		end
 
+		-- Get the module name for testing
 		local function get_module_name()
 			local input = vim.fn.input({
-				prompt = "What module would you like to test? --> ([w]in_interface, [k]obot_1_0, [b]ase, [a]ll): ",
+				prompt = "What module would you like to test? ([w]in_interface, [k]obot_1_0, [b]ase, [a]ll): ",
 			})
 
 			local module_map = {
@@ -176,8 +172,9 @@ return {
 			return module_map[input:lower()]
 		end
 
+		-- Run tests for the selected module
 		local function run_test()
-			vim.cmd("cclose")
+			vim.cmd("cclose") -- Close any open quickfix window
 			local module = get_module_name()
 			if not module then
 				vim.notify("Invalid module selection", vim.log.levels.ERROR)
@@ -185,12 +182,13 @@ return {
 			end
 
 			local Terminal = require("toggleterm.terminal").Terminal
-			-- Close any existing terminal
-			local existing_term = require("toggleterm.terminal").get_all()
-			for _, term in ipairs(existing_term) do -- Fixed syntax error in for loop
+
+			-- Close any existing terminals
+			for _, term in ipairs(require("toggleterm.terminal").get_all()) do
 				term:close()
 			end
 
+			-- Create a new vertical terminal for testing
 			local test_term = Terminal:new({
 				cmd = "cmd.exe /k " .. CONSTANTS.CMDER_PATH,
 				direction = "vertical",
@@ -198,7 +196,7 @@ return {
 				close_on_exit = false,
 			})
 
-			-- Function to check if test is complete
+			-- Function to check if the test is complete
 			local function is_test_complete()
 				local buffer = vim.api.nvim_buf_get_lines(test_term.bufnr, 0, -1, false)
 				for _, line in ipairs(buffer) do
@@ -209,7 +207,7 @@ return {
 				return false
 			end
 
-			-- Define handle_test_result before it's used
+			-- Handle test results (success or failure)
 			local function handle_test_result()
 				if not is_test_complete() then
 					vim.defer_fn(handle_test_result, 10)
@@ -218,30 +216,25 @@ return {
 
 				if parse_terminal_errors() then
 					vim.cmd("wincmd h")
-					vim.notify("Tests failed!", vim.log.levels.ERROR) -- Changed success message to error since parse_terminal_errors returns true when there are errors
+					vim.notify("Tests failed!", vim.log.levels.ERROR)
 				else
 					vim.notify("All tests passed!", vim.log.levels.INFO)
 				end
 			end
 
-			-- Open new terminal and set up layout
+			-- Start the test process
 			test_term:toggle()
+			vim.cmd("wincmd L") -- Move terminal to the right
+			test_term:send("cd " .. CONSTANTS.BUILD_DIR)
 
-			-- Make sure terminal is properly initialized before sending commands
 			vim.defer_fn(function()
-				-- Move terminal to the right
-				vim.cmd("wincmd L")
-				-- Send commands to terminal
-				test_term:send("cd " .. CONSTANTS.BUILD_DIR)
-				vim.defer_fn(function()
-					-- Check if module is "all" and adjust command accordingly
-					local test_cmd = module == "all" and "cbuild -v test" or "cbuild -v test " .. module
-					test_term:send(test_cmd)
-					-- Start checking for completion after sending the command
-					vim.defer_fn(handle_test_result, 10)
-				end, 100)
+				local test_cmd = module == "all" and "cbuild -v test" or "cbuild -v test " .. module
+				test_term:send(test_cmd)
+				vim.defer_fn(handle_test_result, 10)
 			end, 100)
 		end
+
+		-- Setup toggleterm.nvim
 		require("toggleterm").setup({
 			size = 13,
 			open_mapping = [[<c-\>]],
@@ -265,6 +258,7 @@ return {
 			},
 		})
 
+		-- Define terminal instances
 		local Terminal = require("toggleterm.terminal").Terminal
 		local terminals = {
 			float = Terminal:new({ direction = "float" }),
@@ -272,6 +266,7 @@ return {
 			vertical = Terminal:new({ direction = "vertical" }),
 		}
 
+		-- Key mappings for terminal operations
 		local mappings = {
 			{ "t", "<C-h>", [[<C-\><C-n><C-w>h]], "Move Left" },
 			{ "t", "<C-j>", [[<C-\><C-n><C-w>j]], "Move Down" },
@@ -320,6 +315,7 @@ return {
 			},
 		}
 
+		-- Apply key mappings
 		for _, map in ipairs(mappings) do
 			vim.keymap.set(map[1], map[2], map[3], { noremap = true, silent = true, desc = map[4] })
 		end

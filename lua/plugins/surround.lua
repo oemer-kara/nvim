@@ -1,24 +1,19 @@
 return {
 	{
-		"kylechui/nvim-surround",
-		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		"echasnovski/mini.surround",
+		version = false,
 		event = "VeryLazy",
-		config = function()
-			require("nvim-surround").setup({
-				-- Configuration here, or leave empty to use defaults
-				keymaps = {
-					insert = "<C-g>s",
-					insert_line = "<C-g>S",
-					normal = "ys",
-					normal_cur = "yss",
-					normal_line = "yS",
-					normal_cur_line = "ySS",
-					visual = "S",
-					visual_line = "gS",
-					delete = "ds",
-					change = "cs",
-				},
-			})
-		end,
+		opts = {
+			mappings = {
+				add = "sa", -- Add surrounding
+				delete = "sd", -- Delete surrounding
+				replace = "sr", -- Replace surrounding
+				update_n_lines = "", -- Update `n_lines`
+				suffix_last = "l", -- Suffix to search backward
+				suffix_next = "n", -- Suffix to search forward
+			},
+			search_method = "cover_or_next",
+			highlight_duration = 1000,
+		},
 	},
 }

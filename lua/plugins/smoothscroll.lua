@@ -3,7 +3,7 @@ return {
 	config = function()
 		require("neoscroll").setup({
 			-- Set mappings for smooth scrolling
-			mappings = { "<C-u>", "<C-d>", "<C-b>", "zt", "zz", "zb" },
+			mappings = { "<C-u>", "<C-d>", "zt", "zz", "zb" },
 			-- Hide cursor while scrolling for a cleaner look
 			hide_cursor = true,
 			-- Stop scrolling at EOF (end of file)
@@ -26,7 +26,6 @@ return {
 		local keymap = {
 			["<C-u>"] = { neoscroll.scroll, { -0.5, { duration = 20, easing = "quadratic" } } }, -- Scroll up
 			["<C-d>"] = { neoscroll.scroll, { 0.5, { duration = 20, easing = "quadratic" } } }, -- Scroll down
-			["<C-b>"] = { neoscroll.scroll, { -1.0, { duration = 200, easing = "circular" } } }, -- Scroll page up
 			["zt"] = { neoscroll.zt, { 50, { duration = 100, easing = "sine" } } }, -- Scroll line to top
 			["zz"] = { neoscroll.zz, { 50, { duration = 100, easing = "sine" } } }, -- Scroll line to middle
 			["zb"] = { neoscroll.zb, { 50, { duration = 100, easing = "sine" } } }, -- Scroll line to bottom

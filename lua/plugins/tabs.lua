@@ -21,11 +21,11 @@ return {
 				},
 				buffer_close_icon = "󰅖",
 				modified_icon = "●",
-				close_icon = "",
-				left_trunc_marker = "",
-				right_trunc_marker = "",
+				close_icon = "",
+				left_trunc_marker = "",
+				right_trunc_marker = "",
 
-				separator_style = "thin",
+				separator_style = "thin", -- or "thick", "thin", "slant", "padded_slant"
 
 				hover = {
 					enabled = true,
@@ -36,7 +36,7 @@ return {
 				diagnostics = "nvim_lsp",
 				diagnostics_update_in_insert = false,
 				diagnostics_indicator = function(count, level)
-					local icon = level:match("error") and " " or " "
+					local icon = level:match("error") and " " or level:match("warning") and " " or " "
 					return " " .. icon .. count
 				end,
 
@@ -57,6 +57,50 @@ return {
 				enforce_regular_tabs = false,
 				always_show_bufferline = true,
 				sort_by = "id",
+
+				-- Custom highlights
+				highlights = {
+					fill = {
+						bg = "#1e1e2e", -- Background color for the bufferline
+					},
+					background = {
+						bg = "#1e1e2e",
+					},
+					buffer_selected = {
+						bold = true,
+						italic = true,
+						bg = "#313244",
+						fg = "#cdd6f4",
+					},
+					indicator_selected = {
+						bg = "#313244",
+						fg = "#89b4fa",
+					},
+					separator = {
+						bg = "#1e1e2e",
+						fg = "#45475a",
+					},
+					separator_selected = {
+						bg = "#313244",
+						fg = "#45475a",
+					},
+					close_button = {
+						bg = "#1e1e2e",
+						fg = "#f38ba8",
+					},
+					close_button_selected = {
+						bg = "#313244",
+						fg = "#f38ba8",
+					},
+					modified = {
+						bg = "#1e1e2e",
+						fg = "#f9e2af",
+					},
+					modified_selected = {
+						bg = "#313244",
+						fg = "#f9e2af",
+					},
+				},
 			},
 		})
 
