@@ -10,7 +10,6 @@ return {
 	config = function()
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
-		local sorters = require("telescope.sorters")
 		local transform_mod = require("telescope.actions.mt").transform_mod
 		local builtin = require("telescope.builtin")
 
@@ -18,11 +17,9 @@ return {
 			preview_scroll_up = function(prompt_bufnr)
 				actions.preview_scrolling_up(prompt_bufnr)
 			end,
-
 			preview_scroll_down = function(prompt_bufnr)
 				actions.preview_scrolling_down(prompt_bufnr)
 			end,
-
 			close_telescope = function(prompt_bufnr)
 				actions.close(prompt_bufnr)
 			end,
@@ -42,7 +39,7 @@ return {
 						["<C-j>"] = actions.move_selection_next,
 						["<C-u>"] = custom_actions.preview_scroll_up,
 						["<C-d>"] = custom_actions.preview_scroll_down,
-						["<C-q>"] = custom_actions.smart_send_to_qflist,
+						["<C-q>"] = actions.smart_send_to_qflist,
 						["<M-h>"] = actions.select_horizontal,
 						["<M-v>"] = actions.select_vertical,
 						["<C-x>"] = actions.delete_buffer,
@@ -56,7 +53,7 @@ return {
 					},
 				},
 
-				borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" }, -- Cleaner borders
+				borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }, -- Rounded borders
 				layout_strategy = "horizontal", -- Modern layout
 				layout_config = {
 					horizontal = {
@@ -65,13 +62,16 @@ return {
 						results_width = 0.8,
 					},
 				},
+
+				-- Custom highlights for a vibrant look
 				highlight = {
-					preview = "TelescopePreviewNormal",
-					prompt = "TelescopePromptPrefix",
-					results = "TelescopeResultsNormal",
-					border = "TelescopeBorder",
-					cursor = "TelescopeCursor", -- Custom cursor highlight
+					prompt = { bg = "#1A1A1A", fg = "#D4A017" }, -- Gold prompt
+					results = { bg = "#1A1A1A", fg = "#BBBBBB" }, -- Light text on dark background
+					preview = { bg = "#1A1A1A", fg = "#BBBBBB" }, -- Light text on dark background
+					border = { bg = "#1A1A1A", fg = "#D4A017" }, -- Gold borders
+					cursor = { bg = "#333333", fg = "#D4A017" }, -- Gold cursor
 				},
+
 				prompt_prefix = "🔍 ", -- Modern icon
 				selection_caret = "❯ ",
 				entry_prefix = "  ",
@@ -82,13 +82,13 @@ return {
 
 			pickers = {
 				find_files = {
-					theme = "dropdown", -- Modern dropdown theme
-					previewer = true,
+					theme = "ivy", -- Modern dropdown theme
+					previewer = false,
 					hidden = true,
 					find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
 				},
 				live_grep = {
-					theme = "dropdown",
+					theme = "ivy",
 					additional_args = function()
 						return { "--hidden", "-g", "!.git" }
 					end,
@@ -97,7 +97,7 @@ return {
 					theme = "cursor", -- Minimalist cursor theme
 				},
 				lsp_document_symbols = {
-					theme = "dropdown",
+					theme = "ivy",
 					previewer = false,
 					ignore_unnamed_buffers = false,
 					symbols = {
@@ -113,9 +113,10 @@ return {
 						"Property",
 						"Variable",
 					},
+					limit = 1000, -- Increased limit
 				},
 				lsp_workspace_symbols = {
-					theme = "dropdown",
+					theme = "ivy",
 					previewer = false,
 					ignore_unnamed_buffers = false,
 					symbols = {
@@ -131,6 +132,7 @@ return {
 						"Property",
 						"Variable",
 					},
+					limit = 1000, -- Increased limit
 				},
 			},
 
@@ -149,6 +151,12 @@ return {
 
 		telescope.load_extension("fzf")
 		telescope.load_extension("ui-select") -- Load UI select extension
+
+		-- Custom highlight groups for Telescope
+		vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#D4A017", bg = "#1A1A1A" })
+		vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#D4A017", bg = "#1A1A1A" })
+		vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#D4A017", bg = "#1A1A1A" })
+		vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { fg = "#D4A017", bg = "#1A1A1A" })
 
 		local keymap = vim.keymap
 		keymap.set("n", "<C-f>", "<cmd>Telescope find_files<cr>", { desc = "[f]iles" })

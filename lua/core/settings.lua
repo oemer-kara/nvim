@@ -24,6 +24,9 @@ vim.opt.tabstop = 4 -- Set width of tab character to 4 spaces
 vim.opt.shiftwidth = 4 -- Set width of indent to 4 spaces
 vim.opt.softtabstop = 4 -- Backspace removes 4 spaces at a time if they were added as indentation
 vim.opt.breakindent = true -- Maintain indent level when line wrapping occurs
+-- Set caret color
+
+-- Enable blinking cursor (optional)
 
 -----------------------------------------------------------
 -- Search and Replace Behavior

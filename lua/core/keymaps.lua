@@ -9,6 +9,9 @@ local function map(mode, lhs, rhs, opts)
 	end
 	vim.keymap.set(mode, lhs, rhs, options)
 end
+
+vim.api.nvim_set_keymap("n", "vv", "V", { noremap = true, silent = true })
+
 -----------------------------------------------------------
 -- Essential Navigation
 -----------------------------------------------------------
@@ -25,11 +28,35 @@ map("n", "<C-Right>", ":vertical resize -2<CR>", { desc = "Decrease window width
 map("n", "<C-Left>", ":vertical resize +2<CR>", { desc = "Increase window width" })
 map("n", "<C-+>", ":vertical resize =<CR>", { desc = "Equalize window width" })
 
+vim.api.nvim_set_keymap("v", "<Leader>s", ":'<,'>s/\\%V\\<\\><Left><Left><Left>", { noremap = true, silent = false })
+
 -- Keep cursor centered when scrolling
 map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
 map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
 map("n", "n", "nzzzv", { desc = "Next search result and center" })
 map("n", "N", "Nzzzv", { desc = "Previous search result and center" })
+
+-- Define the function
+function VisualBlockSearchReplace()
+	-- Get the visual selection range
+	local start_line = vim.fn.line("'<")
+	local end_line = vim.fn.line("'>")
+
+	-- Prompt for the search and replace terms
+	local search_term = vim.fn.input("Search for: ")
+	local replace_term = vim.fn.input("Replace with: ")
+
+	-- Construct the substitute command
+	local cmd = string.format("%d,%ds/\\%%V%s/%s/g", start_line, end_line, search_term, replace_term)
+
+	-- Execute the command and check if it worked
+	local lines_affected = vim.fn.execute(cmd)
+end
+
+-- Map the function to a keybinding (e.g., `<Leader>sr`)
+vim.api.nvim_set_keymap("v", "<Leader>sr", ":lua VisualBlockSearchReplace()<CR>", { noremap = true, silent = true })
+-- Map the function to a keybinding (e.g., `<Leader>sr`)
+vim.api.nvim_set_keymap("v", "<Leader>sr", ":lua VisualBlockSearchReplace()<CR>", { noremap = true, silent = true })
 
 -----------------------------------------------------------
 -- File and Buffer Operations

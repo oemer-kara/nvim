@@ -1,124 +1,31 @@
 return {
-	"akinsho/bufferline.nvim",
+	"echasnovski/mini.tabline",
 	version = "*",
-	dependencies = "nvim-tree/nvim-web-devicons",
 	config = function()
-		vim.opt.termguicolors = true
-		vim.opt.showtabline = 2
-
-		require("bufferline").setup({
+		require("mini.tabline").setup({
+			-- Customize the appearance to match lackluster.nvim theme
 			options = {
-				mode = "buffers",
-				numbers = "none",
-				close_command = "bdelete! %d",
-				right_mouse_command = "bdelete! %d",
-				left_mouse_command = "buffer %d",
-				middle_mouse_command = nil,
-
-				indicator = {
-					icon = "▎",
-					style = "icon",
-				},
-				buffer_close_icon = "󰅖",
-				modified_icon = "●",
-				close_icon = "",
-				left_trunc_marker = "",
-				right_trunc_marker = "",
-
-				separator_style = "thin", -- or "thick", "thin", "slant", "padded_slant"
-
-				hover = {
-					enabled = true,
-					delay = 200,
-					reveal = { "close" },
-				},
-
-				diagnostics = "nvim_lsp",
-				diagnostics_update_in_insert = false,
-				diagnostics_indicator = function(count, level)
-					local icon = level:match("error") and " " or level:match("warning") and " " or " "
-					return " " .. icon .. count
-				end,
-
-				offsets = {
-					{
-						filetype = "NvimTree",
-						text = "File Explorer",
-						highlight = "Directory",
-						separator = true,
-					},
-				},
-				color_icons = true,
-				show_buffer_icons = true,
-				show_buffer_close_icons = true,
-				show_close_icon = true,
-				show_tab_indicators = true,
-				persist_buffer_sort = true,
-				enforce_regular_tabs = false,
-				always_show_bufferline = true,
-				sort_by = "id",
-
-				-- Custom highlights
-				highlights = {
-					fill = {
-						bg = "#1e1e2e", -- Background color for the bufferline
-					},
-					background = {
-						bg = "#1e1e2e",
-					},
-					buffer_selected = {
-						bold = true,
-						italic = true,
-						bg = "#313244",
-						fg = "#cdd6f4",
-					},
-					indicator_selected = {
-						bg = "#313244",
-						fg = "#89b4fa",
-					},
-					separator = {
-						bg = "#1e1e2e",
-						fg = "#45475a",
-					},
-					separator_selected = {
-						bg = "#313244",
-						fg = "#45475a",
-					},
-					close_button = {
-						bg = "#1e1e2e",
-						fg = "#f38ba8",
-					},
-					close_button_selected = {
-						bg = "#313244",
-						fg = "#f38ba8",
-					},
-					modified = {
-						bg = "#1e1e2e",
-						fg = "#f9e2af",
-					},
-					modified_selected = {
-						bg = "#313244",
-						fg = "#f9e2af",
-					},
-				},
+				show_icons = true, -- Show file icons
+				show_filename_only = true, -- Show only filenames (no paths)
+				tabpage_section = "right", -- Place tabpage section on the right
+				set_vim_settings = true, -- Ensure Neovim settings for tabline are enabled
+			},
+			-- Custom highlights to match lackluster.nvim theme
+			highlights = {
+				MiniTablineCurrent = { fg = "#FF6F61", bg = "#333333", bold = true }, -- Coral for current tab
+				MiniTablineVisible = { fg = "#6B5B95", bg = "#1A1A1A" }, -- Purple for visible tabs
+				MiniTablineHidden = { fg = "#BBBBBB", bg = "#1A1A1A" }, -- Light gray for hidden tabs
+				MiniTablineModifiedCurrent = { fg = "#FFA500", bg = "#333333" }, -- Orange for modified current tab
+				MiniTablineModifiedVisible = { fg = "#FFD700", bg = "#1A1A1A" }, -- Gold for modified visible tabs
+				MiniTablineModifiedHidden = { fg = "#50C878", bg = "#1A1A1A" }, -- Green for modified hidden tabs
+				MiniTablineFill = { bg = "#1A1A1A" }, -- Dark background for unused space
+				MiniTablineTabpagesection = { fg = "#FFD700", bg = "#1A1A1A" }, -- Gold for tabpage section
 			},
 		})
 
-		-- Keymaps for navigating buffers
-		vim.keymap.set("n", "<A-.>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-		vim.keymap.set("n", "<A-,>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
-
-		-- Additional useful keymaps (optional)
-		vim.keymap.set("n", "<A-1>", "<cmd>BufferLineGoToBuffer 1<CR>", { desc = "Go to buffer 1" })
-		vim.keymap.set("n", "<A-2>", "<cmd>BufferLineGoToBuffer 2<CR>", { desc = "Go to buffer 2" })
-		vim.keymap.set("n", "<A-3>", "<cmd>BufferLineGoToBuffer 3<CR>", { desc = "Go to buffer 3" })
-		vim.keymap.set("n", "<A-4>", "<cmd>BufferLineGoToBuffer 4<CR>", { desc = "Go to buffer 4" })
-		vim.keymap.set("n", "<A-5>", "<cmd>BufferLineGoToBuffer 5<CR>", { desc = "Go to buffer 5" })
-
-		-- Commands for sorting buffers (optional)
-		vim.keymap.set("n", "<leader>bb", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
-		vim.keymap.set("n", "<leader>bc", "<cmd>BufferLinePickClose<CR>", { desc = "Pick buffer to close" })
-		vim.keymap.set("n", "<leader>bl", "<cmd>BufferLineCloseLeft<CR>", { desc = "Close all buffers to the left" })
-		vim.keymap.set("n", "<leader>br", "<cmd>BufferLineCloseRight<CR>", { desc = "Close all buffers to the right" })
+		-- Keybindings for tab navigation
+		vim.keymap.set("n", "<A-.>", "<cmd>bnext<CR>", { desc = "Next tab" }) -- Switch to next tab
+		vim.keymap.set("n", "<A-,>", "<cmd>bprevious<CR>", { desc = "Previous tab" }) -- Switch to previous tab
+		vim.keymap.set("n", "<A-n>", "<cmd>tabnew<CR>", { desc = "New tab" }) -- Create a new tab
 	end,
 }

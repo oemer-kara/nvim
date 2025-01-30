@@ -13,11 +13,34 @@ return {
 	config = function()
 		require("lualine").setup({
 			options = {
-				theme = "auto", -- You can also try "tokyonight", "onedark", or "dracula" for a modern look
+				theme = {
+					normal = {
+						a = { fg = "#FF6F61", bg = "#1A1A1A", gui = "bold" }, -- Coral for mode
+						b = { fg = "#6B5B95", bg = "#1A1A1A" }, -- Purple for branch
+						c = { fg = "#BBBBBB", bg = "#1A1A1A" }, -- Very light gray for filename
+					},
+					insert = {
+						a = { fg = "#50C878", bg = "#1A1A1A", gui = "bold" }, -- Emerald green for insert mode
+					},
+					visual = {
+						a = { fg = "#FFA500", bg = "#1A1A1A", gui = "bold" }, -- Bright orange for visual mode
+					},
+					replace = {
+						a = { fg = "#FF4500", bg = "#1A1A1A", gui = "bold" }, -- Bright red for replace mode
+					},
+					command = {
+						a = { fg = "#1E90FF", bg = "#1A1A1A", gui = "bold" }, -- Dodger blue for command mode
+					},
+					inactive = {
+						a = { fg = "#777777", bg = "#1A1A1A" }, -- Light gray for inactive mode
+						b = { fg = "#777777", bg = "#1A1A1A" }, -- Light gray for inactive branch
+						c = { fg = "#777777", bg = "#1A1A1A" }, -- Light gray for inactive filename
+					},
+				},
 				globalstatus = true,
 				icons_enabled = true,
-				component_separators = { left = "", right = "" }, -- More subtle separators
-				section_separators = { left = "", right = "" }, -- Sleek section separators
+				component_separators = { left = "|", right = "|" }, -- Simple separators
+				section_separators = { left = "", right = "" }, -- No section separators for a cleaner look
 				disabled_filetypes = {
 					statusline = {
 						"alfa-nvim",
@@ -34,12 +57,12 @@ return {
 					{
 						"mode",
 						fmt = function(str)
-							return " " .. str:sub(1, 1) -- Add a cool icon before the mode
+							return str:sub(1, 1) -- Simplify mode display
 						end,
 					},
 				},
 				lualine_b = {
-					"fancy_branch",
+					"branch", -- Simple branch display
 				},
 				lualine_c = {
 					{
@@ -70,30 +93,18 @@ return {
 						icons_enabled = true,
 						icon = { align = "right" }, -- Align filetype icon to the right
 					},
-					{
-						"encoding",
-						fmt = function(str)
-							return " " .. str -- Add a cool icon before encoding
-						end,
-					},
-					{
-						"fileformat",
-						fmt = function(str)
-							return " " .. str -- Add a cool icon before file format
-						end,
-					},
 				},
 				lualine_y = {
 					{
 						"progress",
 						fmt = function(str)
-							return " " .. str -- Add a cool icon before progress
+							return str -- Simplify progress display
 						end,
 					},
 				},
 				lualine_z = {
 					function()
-						return " " .. os.date("%d-%m-%Y | %H:%M") -- Add a clock icon before the date and time
+						return os.date("%H:%M") -- Simplify date and time display
 					end,
 				},
 			},

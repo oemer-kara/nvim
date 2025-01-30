@@ -252,11 +252,15 @@ return {
 				border = "curved",
 				winblend = 3,
 				highlights = {
-					border = "Normal",
-					background = "Normal",
+					border = "FloatBorder", -- Use the FloatBorder highlight group
+					background = "NormalFloat", -- Use the NormalFloat highlight group
 				},
 			},
 		})
+
+		-- Custom highlight groups for toggleterm.nvim
+		vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#D4A017", bg = "#1A1A1A" }) -- Gold border
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1A1A1A" }) -- Dark background
 
 		-- Define terminal instances
 		local Terminal = require("toggleterm.terminal").Terminal
