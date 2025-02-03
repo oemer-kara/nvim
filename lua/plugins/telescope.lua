@@ -53,8 +53,8 @@ return {
 					},
 				},
 
-				borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }, -- Rounded borders
-				layout_strategy = "horizontal", -- Modern layout
+				borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+				layout_strategy = "horizontal",
 				layout_config = {
 					horizontal = {
 						prompt_position = "top",
@@ -65,11 +65,12 @@ return {
 
 				-- Custom highlights for a vibrant look
 				highlight = {
-					prompt = { bg = "#1A1A1A", fg = "#D4A017" }, -- Gold prompt
-					results = { bg = "#1A1A1A", fg = "#BBBBBB" }, -- Light text on dark background
-					preview = { bg = "#1A1A1A", fg = "#BBBBBB" }, -- Light text on dark background
-					border = { bg = "#1A1A1A", fg = "#D4A017" }, -- Gold borders
-					cursor = { bg = "#333333", fg = "#D4A017" }, -- Gold cursor
+					prompt = { bg = "#1A1A1A", fg = "#FFC43D" }, -- Using luster color
+					results = { bg = "#1A1A1A", fg = "#9CAFB7" }, -- Using gray3
+					preview = { bg = "#1A1A1A", fg = "#BBBBBB" }, -- Using gray5
+					border = { bg = "#1A1A1A", fg = "#FFC43D" }, -- Using luster color
+					cursor = { bg = "#333333", fg = "#FFC43D" }, -- Using gray1 and luster
+					selection = { bg = "#333333", fg = "#FFC43D" }, -- Using gray1 and luster
 				},
 
 				prompt_prefix = "🔍 ", -- Modern icon
@@ -153,10 +154,22 @@ return {
 		telescope.load_extension("ui-select") -- Load UI select extension
 
 		-- Custom highlight groups for Telescope
-		vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#D4A017", bg = "#1A1A1A" })
-		vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#D4A017", bg = "#1A1A1A" })
-		vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#D4A017", bg = "#1A1A1A" })
-		vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { fg = "#D4A017", bg = "#1A1A1A" })
+		vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "#000000" }) -- Set the main background
+		vim.api.nvim_set_hl(0, "TelescopePromptNormal", { bg = "#000000" }) -- Set prompt background
+		vim.api.nvim_set_hl(0, "TelescopeResultsNormal", { bg = "#000000" }) -- Set results background
+		vim.api.nvim_set_hl(0, "TelescopePreviewNormal", { bg = "#000000" }) -- Set preview background
+
+		vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#FFC43D", bg = "#000000" }) -- luster border, black bg
+		vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = "#FFC43D", bg = "#000000" }) -- luster border, black bg
+		vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = "#FFC43D", bg = "#000000" }) -- luster border, black bg
+		vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { fg = "#FFC43D", bg = "#000000" }) -- luster prefix, black bg
+
+		vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = "#8B0000", bold = true }) -- lack color for matches
+		vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#333333", fg = "#FFC43D" }) -- gray1 and luster
+
+		vim.api.nvim_set_hl(0, "TelescopePromptTitle", { bg = "#FFC43D", fg = "#000000" }) -- luster and black
+		vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { bg = "#04724D", fg = "#000000" }) -- green and black
+		vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { bg = "#05668D", fg = "#000000" }) -- blue and black
 
 		local keymap = vim.keymap
 		keymap.set("n", "<C-f>", "<cmd>Telescope find_files<cr>", { desc = "[f]iles" })

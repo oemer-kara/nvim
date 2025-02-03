@@ -1,14 +1,25 @@
 return {
-	"numToStr/Comment.nvim",
-	config = function()
-		require("Comment").setup({
-			toggler = {
-				line = "//", -- Use // for single-line comments
-				block = "/*", -- You can adjust block comments if necessary
+	{
+		"numToStr/Comment.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		opts = {
+			-- Enable the plugin
+			mappings = {
+				basic = true,
+				extra = true,
 			},
-			opleader = {
-				line = "//",
-			},
-		})
-	end,
+		},
+		config = function()
+			-- Set up the plugin
+			require("Comment").setup()
+
+			-- Set commentstring for cpp files
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "cpp",
+				callback = function()
+					vim.bo.commentstring = "// %s"
+				end,
+			})
+		end,
+	},
 }

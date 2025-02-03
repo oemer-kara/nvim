@@ -18,6 +18,9 @@ return {
 				fold = {
 					enable = true, -- Enable folding based on Treesitter
 				},
+				matchparen = {
+					enable = false, -- Disable matching parentheses highlighting
+				},
 			})
 
 			-- Folding settings

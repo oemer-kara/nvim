@@ -106,12 +106,6 @@ map("n", "<leader>sv", ":vsplit<CR>", { desc = "Vertical split" })
 map("n", "<leader>sc", ":close<CR>", { desc = "Vertical split" })
 
 -----------------------------------------------------------
--- Search and Replace
------------------------------------------------------------
--- Quick substitute current word
-map("n", "<leader>S", ":%s/<C-r><C-w>//g<Left><Left>", { desc = "Replace current word" })
-
------------------------------------------------------------
 -- Text Objects and Operators
 -----------------------------------------------------------
 -- Entire buffer operations
@@ -176,3 +170,5 @@ vim.keymap.set("n", "<C-c>", function()
 end, { noremap = true, silent = true })
 
 vim.keymap.set("i", "<C-h>", "<C-w>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("v", "b", "<C-v>", { noremap = true, silent = true })

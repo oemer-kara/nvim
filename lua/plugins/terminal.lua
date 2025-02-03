@@ -270,6 +270,16 @@ return {
 			vertical = Terminal:new({ direction = "vertical" }),
 		}
 
+		-- Function to kill the horizontal terminal
+		local function kill_horizontal_terminal()
+			local term = terminals.horizontal
+			if term:is_open() then
+				term:shutdown()
+			else
+				term:toggle()
+			end
+		end
+
 		-- Key mappings for terminal operations
 		local mappings = {
 			{ "t", "<C-h>", [[<C-\><C-n><C-w>h]], "Move Left" },
@@ -288,9 +298,7 @@ return {
 			{
 				"n",
 				"<leader>th",
-				function()
-					terminals.horizontal:toggle()
-				end,
+				kill_horizontal_terminal,
 				"[h]orizontal",
 			},
 			{

@@ -86,7 +86,7 @@ return {
 					end,
 				},
 				experimental = {
-					ghost_text = true, -- Show ghost text for better UX
+					ghost_text = false, -- Show ghost text for better UX
 				},
 			})
 

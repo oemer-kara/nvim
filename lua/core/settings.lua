@@ -54,7 +54,7 @@ vim.opt.fileencoding = "utf-8" -- Set default file encoding to UTF-8
 -----------------------------------------------------------
 vim.opt.mouse = "a" -- Enable mouse support in all modes
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard for all operations
-vim.opt.scrolloff = 8 -- Keep 8 lines visible above/below cursor when scrolling
+vim.opt.scrolloff = 10 -- Keep 8 lines visible above/below cursor when scrolling
 vim.opt.sidescrolloff = 8 -- Keep 8 columns visible when scrolling horizontally
 vim.opt.virtualedit = "block" -- Allow cursor placement beyond text in visual block mode
 vim.opt.updatetime = 50 -- Reduce update time for faster response (default: 4000ms)

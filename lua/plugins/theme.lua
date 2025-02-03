@@ -3,40 +3,35 @@ return {
 	lazy = false, -- Ensure the plugin is loaded immediately
 	priority = 1000, -- Set a high priority to ensure it loads before other plugins
 	opts = {
-		-- Tweak the color palette to make it more vibrant
+		-- Tweak the color palette using your provided colors
 		tweak_color = {
-			lack = "#8B0000", -- Dark red (for highlights)
-			luster = "#D4A017", -- Muted gold (for accents, complements dark red)
-			orange = "#CC5500", -- Burnt orange (less bright)
-			yellow = "#D4A017", -- Muted gold
-			green = "#556B2F", -- Dark olive green (complements dark red)
-			blue = "#1E90FF", -- Dodger blue
-			red = "#8B0000", -- Dark red
+			lack = "#8B0000", -- Darker red (for highlights)
+			luster = "#FFC43D", -- Vibrant yellow (for accents)
+			orange = "#FFC43D", -- Vibrant yellow (used as orange substitute)
+			yellow = "#FFC43D", -- Vibrant yellow
+			green = "#04724D", -- Dark green (for complementary elements)
+			blue = "#05668D", -- Dark blue (for syntax and UI elements)
+			red = "#6B242D", -- Darker red
 			black = "#1A1A1A", -- Dark background
 			gray1 = "#333333", -- Dark gray
 			gray2 = "#555555", -- Medium gray
-			gray3 = "#777777", -- Light gray
+			gray3 = "#9CAFB7", -- Light gray (using your provided color)
 			gray4 = "#999999", -- Lighter gray
 			gray5 = "#BBBBBB", -- Very light gray
 		},
 		-- Tweak syntax colors for better readability and vibrancy
 		tweak_syntax = {
-			string = "#D4A017", -- Muted gold for strings (less bright)
-			string_escape = "#8B0000", -- Dark red for string escapes
-			comment = "#777777", -- Light gray for comments
-			builtin = "#1E90FF", -- Dodger blue for built-in functions
-			type = "#556B2F", -- Dark olive green for types
-			keyword = "#8B0000", -- Dark red for keywords
-			keyword_return = "#CC5500", -- Burnt orange for return keywords
-			keyword_exception = "#D4A017", -- Muted gold for exceptions
+			string = "#9CAFB7",
+			string_escape = "#6B242D",
+			comment = "#AABD8C",
+			builtin = "#05668D",
+			type = "#04724D",
+			keyword = "#8B0000",
+			keyword_return = "#FFC43D",
+			keyword_exception = "#FFC43D",
 		},
 		-- Tweak background transparency and colors
-		tweak_background = {
-			normal = "#1A1A1A", -- Dark background
-			telescope = "#1A1A1A", -- Slightly lighter for Telescope
-			menu = "#555555", -- Medium gray for menus
-			popup = "#777777", -- Light gray for popups
-		},
+		tweak_background = {},
 		-- Tweak UI settings for better visual appeal
 		tweak_ui = {
 			disable_undercurl = false, -- Keep undercurl for errors/warnings
@@ -44,6 +39,19 @@ return {
 		},
 		-- Tweak highlights manually for bold, italic, etc.
 		tweak_highlight = {
+			-- Add MiniTabline highlights here
+			MiniTablineCurrent = { fg = "#FFC43D", bg = "#1A1A1A", bold = true }, -- Vibrant yellow for current tab
+			MiniTablineVisible = { fg = "#05668D", bg = "#1A1A1A" }, -- Dark blue for visible tabs
+			MiniTablineHidden = { fg = "#9CAFB7", bg = "#1A1A1A" }, -- Light gray for hidden tabs
+			MiniTablineModifiedCurrent = { fg = "#FFC43D", bg = "#1A1A1A" }, -- Vibrant yellow for modified current tab
+			MiniTablineModifiedVisible = { fg = "#04724D", bg = "#1A1A1A" }, -- Dark green for modified visible tabs
+			MiniTablineModifiedHidden = { fg = "#6B242D", bg = "#1A1A1A" }, -- Darker red for modified hidden tabs
+			MiniTablineFill = { bg = "#1A1A1A" }, -- Dark background for unused space
+			MiniTablineTabpagesection = { fg = "#FFC43D", bg = "#1A1A1A" }, -- Vibrant yellow for tabpage section
+
+			-- Updated highlight groups with darker backgrounds
+
+			-- Existing syntax highlights
 			["@keyword"] = {
 				overwrite = false,
 				bold = true,
@@ -83,7 +91,7 @@ return {
 			oil = false,
 			rainbow_delimiter = false, -- Keep rainbow delimiters for color
 			scollbar = false,
-			telescope = false,
+			telescope = true,
 			todo_comments = false,
 			tree = false,
 			trouble = false,
@@ -94,6 +102,6 @@ return {
 	config = function(_, opts)
 		require("lackluster").setup(opts) -- Initialize lackluster with the provided options
 		vim.cmd.colorscheme("lackluster") -- Set the colorscheme
-		vim.api.nvim_set_hl(0, "Cursor", { fg = "#1A1A1A", bg = "#D4A017" })
+		vim.api.nvim_set_hl(0, "Cursor", { fg = "#1A1A1A", bg = "#FFC43D" }) -- Custom cursor color
 	end,
 }

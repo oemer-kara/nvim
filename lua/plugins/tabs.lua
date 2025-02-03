@@ -12,14 +12,14 @@ return {
 			},
 			-- Custom highlights to match lackluster.nvim theme
 			highlights = {
-				MiniTablineCurrent = { fg = "#FF6F61", bg = "#333333", bold = true }, -- Coral for current tab
-				MiniTablineVisible = { fg = "#6B5B95", bg = "#1A1A1A" }, -- Purple for visible tabs
-				MiniTablineHidden = { fg = "#BBBBBB", bg = "#1A1A1A" }, -- Light gray for hidden tabs
-				MiniTablineModifiedCurrent = { fg = "#FFA500", bg = "#333333" }, -- Orange for modified current tab
-				MiniTablineModifiedVisible = { fg = "#FFD700", bg = "#1A1A1A" }, -- Gold for modified visible tabs
-				MiniTablineModifiedHidden = { fg = "#50C878", bg = "#1A1A1A" }, -- Green for modified hidden tabs
+				MiniTablineCurrent = { fg = "#FFC43D", bg = "#1A1A1A", bold = true }, -- Vibrant yellow for current tab
+				MiniTablineVisible = { fg = "#05668D", bg = "#1A1A1A" }, -- Dark blue for visible tabs
+				MiniTablineHidden = { fg = "#9CAFB7", bg = "#1A1A1A" }, -- Light gray for hidden tabs
+				MiniTablineModifiedCurrent = { fg = "#FFC43D", bg = "#1A1A1A" }, -- Vibrant yellow for modified current tab
+				MiniTablineModifiedVisible = { fg = "#04724D", bg = "#1A1A1A" }, -- Dark green for modified visible tabs
+				MiniTablineModifiedHidden = { fg = "#6B242D", bg = "#1A1A1A" }, -- Darker red for modified hidden tabs
 				MiniTablineFill = { bg = "#1A1A1A" }, -- Dark background for unused space
-				MiniTablineTabpagesection = { fg = "#FFD700", bg = "#1A1A1A" }, -- Gold for tabpage section
+				MiniTablineTabpagesection = { fg = "#FFC43D", bg = "#1A1A1A" }, -- Vibrant yellow for tabpage section
 			},
 		})
 
