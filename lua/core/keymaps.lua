@@ -42,15 +42,27 @@ function VisualBlockSearchReplace()
 	local start_line = vim.fn.line("'<")
 	local end_line = vim.fn.line("'>")
 
-	-- Prompt for the search and replace terms
+	-- Get the search and replace terms
 	local search_term = vim.fn.input("Search for: ")
+	if search_term == "" then
+		return
+	end
+
 	local replace_term = vim.fn.input("Replace with: ")
+	if replace_term == "" then
+		return
+	end
 
-	-- Construct the substitute command
-	local cmd = string.format("%d,%ds/\\%%V%s/%s/g", start_line, end_line, search_term, replace_term)
+	-- Get all the lines in the selection
+	local lines = vim.fn.getline(start_line, end_line)
 
-	-- Execute the command and check if it worked
-	local lines_affected = vim.fn.execute(cmd)
+	-- Replace all instances in each line
+	for i, line in ipairs(lines) do
+		-- Use Lua's string.gsub to replace all instances
+		local new_line = string.gsub(line, search_term, replace_term)
+		-- Set the modified line back
+		vim.fn.setline(start_line + i - 1, new_line)
+	end
 end
 
 -- Map the function to a keybinding (e.g., `<Leader>sr`)

@@ -5,6 +5,7 @@ return {
 		"nvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-tree/nvim-web-devicons",
+		"nvim-telescope/telescope-live-grep-args.nvim",
 		"nvim-telescope/telescope-ui-select.nvim", -- Modern UI selector
 	},
 	config = function()
@@ -152,6 +153,7 @@ return {
 
 		telescope.load_extension("fzf")
 		telescope.load_extension("ui-select") -- Load UI select extension
+		telescope.load_extension("live_grep_args")
 
 		-- Custom highlight groups for Telescope
 		vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "#000000" }) -- Set the main background
@@ -182,6 +184,7 @@ return {
 		keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "[h]elp tags" })
 		keymap.set("n", "<leader>fc", "<cmd>Telescope commands<cr>", { desc = "[c]ommands" })
 		keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "[k]eymaps" })
+		keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 
 		-- New symbol search keymaps
 		keymap.set("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "[d]ocument symbols" })

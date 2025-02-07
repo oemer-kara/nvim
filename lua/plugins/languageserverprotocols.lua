@@ -14,6 +14,7 @@ return {
 				cmd = {
 					"clangd",
 					"--query-driver=**/mingw64/bin/gcc.exe,**/mingw64/bin/g++.exe",
+					"--header-insertion=never",
 					"--all-scopes-completion",
 					"--offset-encoding=utf-16",
 				},

@@ -9,7 +9,7 @@ return {
 					relativenumber = true,
 					signcolumn = "yes",
 					winfixheight = true,
-					wrap = false,
+					wrap = false, -- Disable wrapping to avoid cluttering
 					colorcolumn = "80",
 				},
 				use_default_opts = false,
@@ -50,9 +50,16 @@ return {
 					linenr = function(lnum, col)
 						return string.format("(%d:%d)", lnum, col)
 					end,
+					-- Custom formatting for multi-line entries
+					text = function(text)
+						-- Split the text into lines and keep only the first line for the quickfix list
+						local first_line = text:match("([^\n]+)")
+						return first_line or text
+					end,
 				},
 			})
 
+			-- Custom highlight groups
 			vim.cmd([[
                 hi QuickFixLine guibg=#404040 guifg=#00ff00
                 hi qfFileName guifg=#00ff00
