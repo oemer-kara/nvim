@@ -107,12 +107,12 @@ return {
 		-- Function to get the module name for testing
 		local function get_module_name()
 			local input = vim.fn.input({
-				prompt = "What module would you like to test? ([w]in_interface, [k]opilot, [b]ase, [a]ll): ",
+				prompt = "What module would you like to test? ([w]in, [k]obot, [b]ase, [a]ll): ",
 			})
 
 			local module_map = {
-				w = "win_interface",
-				k = "kopilot_1_0",
+				w = "win",
+				k = "kobot_1_0",
 				b = "base",
 				a = "all",
 			}

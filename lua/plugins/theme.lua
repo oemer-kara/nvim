@@ -5,30 +5,30 @@ return {
 	opts = {
 		-- Tweak the color palette using your provided colors
 		tweak_color = {
-			lack = "#8B0000", -- Darker red (for highlights)
-			luster = "#FFC43D", -- Vibrant yellow (for accents)
-			orange = "#FFC43D", -- Vibrant yellow (used as orange substitute)
-			yellow = "#FFC43D", -- Vibrant yellow
-			green = "#04724D", -- Dark green (for complementary elements)
-			blue = "#05668D", -- Dark blue (for syntax and UI elements)
-			red = "#6B242D", -- Darker red
-			black = "#1A1A1A", -- Dark background
-			gray1 = "#333333", -- Dark gray
-			gray2 = "#555555", -- Medium gray
-			gray3 = "#9CAFB7", -- Light gray (using your provided color)
-			gray4 = "#999999", -- Lighter gray
-			gray5 = "#BBBBBB", -- Very light gray
+			lack = "#A00000", -- Slightly brighter red (for highlights)
+			luster = "#FFD700", -- More vibrant yellow (for accents)
+			orange = "#FFA500", -- Actual orange for better distinction
+			yellow = "#FFD700", -- More vibrant yellow
+			green = "#00A86B", -- Brighter green (for complementary elements)
+			blue = "#1E90FF", -- Brighter blue (for syntax and UI elements)
+			red = "#8B0000", -- Slightly brighter red
+			black = "#1A1A1A", -- Dark background (unchanged)
+			gray1 = "#333333", -- Dark gray (unchanged)
+			gray2 = "#555555", -- Medium gray (unchanged)
+			gray3 = "#9CAFB7", -- Light gray (unchanged)
+			gray4 = "#999999", -- Lighter gray (unchanged)
+			gray5 = "#BBBBBB", -- Very light gray (unchanged)
 		},
 		-- Tweak syntax colors for better readability and vibrancy
 		tweak_syntax = {
-			string = "#9CAFB7",
-			string_escape = "#6B242D",
-			comment = "#AABD8C",
-			builtin = "#05668D",
-			type = "#04724D",
-			keyword = "#8B0000",
-			keyword_return = "#FFC43D",
-			keyword_exception = "#FFC43D",
+			string = "#9CAFB7", -- Unchanged
+			string_escape = "#8B0000", -- Slightly brighter red
+			comment = "#AABD8C", -- Unchanged
+			builtin = "#1E90FF", -- Brighter blue
+			type = "#00A86B", -- Brighter green
+			keyword = "#A00000", -- Slightly brighter red
+			keyword_return = "#FFD700", -- More vibrant yellow
+			keyword_exception = "#FFA500", -- Actual orange
 		},
 		-- Tweak background transparency and colors
 		tweak_background = {},
@@ -40,14 +40,14 @@ return {
 		-- Tweak highlights manually for bold, italic, etc.
 		tweak_highlight = {
 			-- Add MiniTabline highlights here
-			MiniTablineCurrent = { fg = "#FFC43D", bg = "#1A1A1A", bold = true }, -- Vibrant yellow for current tab
-			MiniTablineVisible = { fg = "#05668D", bg = "#1A1A1A" }, -- Dark blue for visible tabs
+			MiniTablineCurrent = { fg = "#FFD700", bg = "#1A1A1A", bold = true }, -- More vibrant yellow for current tab
+			MiniTablineVisible = { fg = "#1E90FF", bg = "#1A1A1A" }, -- Brighter blue for visible tabs
 			MiniTablineHidden = { fg = "#9CAFB7", bg = "#1A1A1A" }, -- Light gray for hidden tabs
-			MiniTablineModifiedCurrent = { fg = "#FFC43D", bg = "#1A1A1A" }, -- Vibrant yellow for modified current tab
-			MiniTablineModifiedVisible = { fg = "#04724D", bg = "#1A1A1A" }, -- Dark green for modified visible tabs
-			MiniTablineModifiedHidden = { fg = "#6B242D", bg = "#1A1A1A" }, -- Darker red for modified hidden tabs
+			MiniTablineModifiedCurrent = { fg = "#FFD700", bg = "#1A1A1A" }, -- More vibrant yellow for modified current tab
+			MiniTablineModifiedVisible = { fg = "#00A86B", bg = "#1A1A1A" }, -- Brighter green for modified visible tabs
+			MiniTablineModifiedHidden = { fg = "#8B0000", bg = "#1A1A1A" }, -- Slightly brighter red for modified hidden tabs
 			MiniTablineFill = { bg = "#1A1A1A" }, -- Dark background for unused space
-			MiniTablineTabpagesection = { fg = "#FFC43D", bg = "#1A1A1A" }, -- Vibrant yellow for tabpage section
+			MiniTablineTabpagesection = { fg = "#FFD700", bg = "#1A1A1A" }, -- More vibrant yellow for tabpage section
 
 			-- Updated highlight groups with darker backgrounds
 
@@ -102,6 +102,6 @@ return {
 	config = function(_, opts)
 		require("lackluster").setup(opts) -- Initialize lackluster with the provided options
 		vim.cmd.colorscheme("lackluster") -- Set the colorscheme
-		vim.api.nvim_set_hl(0, "Cursor", { fg = "#1A1A1A", bg = "#FFC43D" }) -- Custom cursor color
+		vim.api.nvim_set_hl(0, "Cursor", { fg = "#1A1A1A", bg = "#FFD700" }) -- Custom cursor color with more vibrant yellow
 	end,
 }
