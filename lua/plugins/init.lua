@@ -1,1 +1,1 @@
-return {} -- Necessary for files
+return {}

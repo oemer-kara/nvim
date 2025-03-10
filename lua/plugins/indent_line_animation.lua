@@ -1,15 +1,22 @@
 return {
 	"echasnovski/mini.indentscope",
+
+	-----------------------------------
+	-- Version & Events
+	-----------------------------------
 	version = false,
 	event = {
 		"BufReadPost",
 		"BufNewFile",
 		"BufWritePre",
 	},
+
+	-----------------------------------
+	-- Options
+	-----------------------------------
 	opts = {
-		symbol = "▏",
+		symbol = "┊",
 		draw = {
-			-- Fixed animation speed that's still smooth
 			animation = function()
 				return 10
 			end,
@@ -22,22 +29,18 @@ return {
 			responsive = true,
 			ignore_first_line = false,
 		},
-		-- Modern mappings for navigation
 		mappings = {
 			goto_top = "[i",
 			goto_bottom = "]i",
 		},
 	},
+
+	-----------------------------------
+	-- Configuration
+	-----------------------------------
 	config = function(_, opts)
 		require("mini.indentscope").setup(opts)
 
-		-- Modern highlight with transparency support
-		vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", {
-			fg = "#404040",
-			nocombine = true,
-		})
-
-		-- Exclude filetypes more elegantly
 		local ignore_filetypes = {
 			"help",
 			"alpha",
@@ -52,7 +55,6 @@ return {
 			"lazyterm",
 		}
 
-		-- Auto disable for specific filetypes
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = ignore_filetypes,
 			callback = function()
@@ -60,7 +62,6 @@ return {
 			end,
 		})
 
-		-- Disable on these buffer types
 		vim.api.nvim_create_autocmd("BufEnter", {
 			callback = function()
 				if vim.bo.buftype ~= "" then

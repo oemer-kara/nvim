@@ -3,6 +3,9 @@ return {
 	version = false,
 	event = "InsertEnter",
 	opts = {
+		----------------------------------------
+		-- PAIRED CHARACTERS
+		----------------------------------------
 		-- Characters to be paired
 		pairs = {
 			{ "(", ")" },
@@ -12,6 +15,10 @@ return {
 			{ "'", "'" },
 			{ "`", "`" },
 		},
+
+		----------------------------------------
+		-- BEHAVIOR SETTINGS
+		----------------------------------------
 		-- Characters where pair completion is disabled
 		disable_in_macro = true,
 		disable_in_visualblock = true,
