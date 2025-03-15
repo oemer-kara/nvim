@@ -9,6 +9,7 @@ vim.opt.synmaxcol = 200 -- Limit syntax highlighting to first 200 columns to imp
 vim.opt.number = true -- Show absolute line numbers on the left
 vim.opt.relativenumber = true -- Show relative line numbers for easier vertical navigation
 vim.opt.cursorline = true -- Highlight the current line for better visibility
+vim.opt.showmode = false -- Stops showing the modes
 -- vim.opt.colorcolumn = "80"     -- Display vertical line at column 80 for code length guidance
 
 -----------------------------------------------------------
@@ -19,6 +20,7 @@ vim.opt.smartcase = true -- Override ignorecase if search pattern contains upper
 vim.opt.incsearch = true -- Show search matches as you type
 vim.opt.hlsearch = false -- Don't highlight all matches after search is complete
 vim.opt.gdefault = true -- Apply substitutions globally on lines by default
+vim.opt.foldenable = true -- Fold the code
 vim.opt.inccommand = "nosplit" -- Show preview of substitutions in real-time
 
 -----------------------------------------------------------
@@ -28,7 +30,17 @@ vim.opt.mouse = "a" -- Enable mouse support in all modes
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard for all operations
 vim.opt.scrolloff = 10 -- Keep 10 lines visible above/below cursor when scrolling
 vim.opt.sidescrolloff = 8 -- Keep 10 columns visible when scrolling horizontally
-vim.opt.virtualedit = "block" -- Allow cursor placement beyond text in visual block mode
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true -- Allow cursor placement beyond text in visual block mode
+
+-----------------------------------------------------------
+-- Folding
+-----------------------------------------------------------
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false -- Start with folds open
+vim.opt.foldlevel = 99 -- High fold level to start with all folds open
 
 -----------------------------------------------------------
 -- Window Management

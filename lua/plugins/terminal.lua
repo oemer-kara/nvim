@@ -229,6 +229,18 @@ return {
 			{ noremap = true, silent = true }
 		)
 
+		-- Send C-c even though not in terminal mode
+		vim.keymap.set("n", "<C-c>", function()
+			local chan = vim.b.terminal_job_id
+			if chan then
+				vim.cmd("startinsert")
+				vim.fn.chansend(chan, "\003")
+				local ctrlc = vim.api.nvim_replace_termcodes("<C-c>", true, true, true)
+				vim.fn.chansend(chan, ctrlc)
+				vim.fn.chansend(chan, string.char(3))
+			end
+		end, { noremap = true, silent = true })
+
 		-- Escape key binding to exit terminal mode
 		vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 	end,

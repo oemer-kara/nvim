@@ -100,7 +100,7 @@ return {
 			-- Filesystem Settings
 			-----------------------------------
 			filesystem = {
-				use_libuv_file_watcher = true,
+				use_libuv_file_watcher = false,
 				follow_current_file = {
 					enabled = true,
 				},
