@@ -4,7 +4,7 @@ return {
 	priority = 1000, -- Load this plugin before others
 	opts = {
 		-- Default options
-		compile = false, -- Enable compiling the colorscheme
+		compile = true, -- Enable compiling the colorscheme
 		undercurl = true, -- Enable undercurls
 		commentStyle = { italic = true },
 		functionStyle = {},
@@ -69,9 +69,9 @@ return {
 				},
 			}
 		end,
-		theme = "wave", -- Load "wave" theme when 'background' option is not set
+		theme = "dragon", -- Load "wave" theme when 'background' option is not set
 		background = { -- Map the value of 'background' option to a theme
-			dark = "wave", -- Try "dragon" !
+			dark = "dragon", -- Try "dragon" !
 			light = "lotus",
 		},
 	},
