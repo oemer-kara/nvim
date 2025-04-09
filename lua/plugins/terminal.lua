@@ -7,7 +7,7 @@ return {
 		local Terminal = require("toggleterm.terminal").Terminal
 
 		-- Path to Cmder's init.bat
-		local CMDER_PATH = "C:\\tools\\Cmder\\vendor\\init.bat"
+		local CMDER_PATH = "C:\\Users\\oemer\\workspace\\tools\\cmder.bat"
 
 		-----------------------------------
 		-- Helper Functions

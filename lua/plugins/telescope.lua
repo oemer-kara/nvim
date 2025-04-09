@@ -3,7 +3,6 @@ return {
 	branch = "0.1.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-tree/nvim-web-devicons",
 		"nvim-telescope/telescope-live-grep-args.nvim",
 		"nvim-telescope/telescope-ui-select.nvim", -- Modern UI selector
@@ -141,12 +140,6 @@ return {
 			-- EXTENSIONS
 			----------------------------------------
 			extensions = {
-				fzf = {
-					fuzzy = true,
-					override_generic_sorter = true,
-					override_file_sorter = true,
-					case_mode = "smart_case",
-				},
 				["ui-select"] = {
 					theme = "dropdown", -- Modern dropdown for UI select
 				},
@@ -156,7 +149,6 @@ return {
 		----------------------------------------
 		-- LOAD EXTENSIONS
 		----------------------------------------
-		telescope.load_extension("fzf")
 		telescope.load_extension("ui-select") -- UI select extension
 		telescope.load_extension("live_grep_args")
 
