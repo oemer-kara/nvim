@@ -48,7 +48,7 @@ return {
 			ensure_installed = {
 				-- Formatters
 				"clang-format", -- C, C++
-				"black", -- Python
+				-- "black", -- Python
 				"google-java-format", -- Java
 				"latexindent", -- LaTeX
 				-- Linters
@@ -64,7 +64,7 @@ return {
 			sources = {
 				-- FORMATTERS ------------------------
 				null_ls.builtins.formatting.clang_format, -- C, C++
-				null_ls.builtins.formatting.black, -- Python
+				-- null_ls.builtins.formatting.black, -- Python
 				null_ls.builtins.formatting.google_java_format, -- Java
 				null_ls.builtins.formatting.latexindent, -- LaTeX
 

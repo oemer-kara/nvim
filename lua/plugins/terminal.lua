@@ -9,6 +9,9 @@ return {
 		-- Path to Cmder's init.bat
 		local CMDER_PATH = "C:\\Users\\oemer\\workspace\\tools\\cmder.bat"
 
+		-- Project build path -
+		local BUILD_PATH = "C:\\Users\\oemer\\workspace\\projects\\arkasoft_main\\build"
+
 		-----------------------------------
 		-- Helper Functions
 		-----------------------------------
@@ -108,7 +111,7 @@ return {
 
 			local term = terminal_instance
 			term:toggle()
-			term:send("cd /d C:\\Users\\okara\\Workspace\\Arkasoft\\arkasoft_main\\build", false)
+			term:send("cd " .. BUILD_PATH, false)
 			term:send("cbuild -v build kopilot", true)
 			term:focus()
 		end
@@ -156,7 +159,7 @@ return {
 			local term = terminal_instance
 
 			term:toggle()
-			term:send("cd /d C:\\Users\\okara\\Workspace\\Arkasoft\\arkasoft_main\\build", false)
+			term:send("cd " .. BUILD_PATH, false)
 			term:send(test_cmd, true)
 			term:focus()
 		end
