@@ -127,5 +127,20 @@ return {
 				vim.keymap.set("n", "gr", telescope.lsp_references, opts) -- Find references
 			end,
 		})
+
+		-- Python LSP configuration
+		lspconfig.pyright.setup({
+			capabilities = capabilities,
+			on_attach = function(client, bufnr)
+				local opts = { noremap = true, silent = true, buffer = bufnr }
+				vim.keymap.set("n", "gd", telescope.lsp_definitions, opts)
+				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				vim.keymap.set("n", "gi", telescope.lsp_implementations, opts)
+				vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+				vim.keymap.set("n", "gr", telescope.lsp_references, opts)
+			end,
+		})
 	end,
 }

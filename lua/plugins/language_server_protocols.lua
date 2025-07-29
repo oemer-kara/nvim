@@ -48,11 +48,11 @@ return {
 			ensure_installed = {
 				-- Formatters
 				"clang-format", -- C, C++
-				-- "black", -- Python
+				"black", -- Python
 				"google-java-format", -- Java
 				"latexindent", -- LaTeX
 				-- Linters
-				"flake8", -- Python
+				"ruff", -- Python
 				-- "cpplint", -- C, C++
 			},
 		})
@@ -64,12 +64,14 @@ return {
 			sources = {
 				-- FORMATTERS ------------------------
 				null_ls.builtins.formatting.clang_format, -- C, C++
-				-- null_ls.builtins.formatting.black, -- Python
+				null_ls.builtins.formatting.black, -- Python
 				null_ls.builtins.formatting.google_java_format, -- Java
 				null_ls.builtins.formatting.latexindent, -- LaTeX
 
 				-- LINTERS ---------------------------
-				null_ls.builtins.diagnostics.flake8, -- Python
+				null_ls.builtins.diagnostics.ruff.with({
+					extra_args = { "--select=E", "--ignore=F821,F401,F403,F405,F,W,C,N,UP,B,A,COM,C4,DTZ,T10,ISC,G,PIE,T20,PYI,PT,Q,RSE,RET,SLF,SLOT,SIM,TID,TCH,ARG,PTH,ERA,PD,PGH,PL,TRY,NPY,AIR,PERF,FURB,LOG,RUF" }
+				}), -- Python
 				-- null_ls.builtins.diagnostics.cpplint, -- C, C++
 			},
 		})
@@ -78,11 +80,7 @@ return {
 		-- AUTO FORMATTING
 		----------------------------------------
 		local format_on_save = function()
-			vim.lsp.buf.format({
-				filter = function(client)
-					return client.name == "null-ls"
-				end,
-			})
+			vim.lsp.buf.format({ async = false })
 		end
 
 		vim.api.nvim_create_autocmd("BufWritePre", {
