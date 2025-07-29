@@ -9,7 +9,7 @@ return {
 		mappings = {
 			add = "sa", -- Add surrounding
 			delete = "sd", -- Delete surrounding
-			replace = "sr", -- Replace surrounding
+			replace = "sc", -- Replace surrounding
 			update_n_lines = "", -- Update `n_lines`
 			suffix_last = "l", -- Suffix to search backward
 			suffix_next = "n", -- Suffix to search forward
