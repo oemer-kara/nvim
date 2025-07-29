@@ -1,10 +1,14 @@
 return {
 	"williamboman/mason.nvim",
+	version = "~1.8.0",
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
-		"whoissethdaniel/mason-tool-installer.nvim",
-		"jose-elias-alvarez/null-ls.nvim",
+		{ "williamboman/mason-lspconfig.nvim", version = "~1.20.0" },
+		{ "whoissethdaniel/mason-tool-installer.nvim", version = "~1.11.0" },
+		{ "nvimtools/none-ls.nvim", version = "~1.0.0" },
 		"nvim-lua/plenary.nvim",
+		"neovim/nvim-lspconfig",
+		"hrsh7th/cmp-nvim-lsp",
+		"onsails/lspkind.nvim",
 	},
 	config = function()
 		----------------------------------------
@@ -13,7 +17,11 @@ return {
 		local mason = require("mason")
 		local mason_lspconfig = require("mason-lspconfig")
 		local mason_tool_installer = require("mason-tool-installer")
-		local null_ls = require("null-ls")
+		local none_ls = require("null-ls")
+		local lspconfig = require("lspconfig")
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local telescope = require("telescope.builtin")
+		local lspkind = require("lspkind")
 
 		----------------------------------------
 		-- MASON CORE SETUP
@@ -29,16 +37,115 @@ return {
 		})
 
 		----------------------------------------
-		-- LSP SETUP
+		-- LSPKIND CONFIGURATION
 		----------------------------------------
-		mason_lspconfig.setup({
-			ensure_installed = {
-				"clangd", -- C, C++
-				-- "java_language_server", -- Java
-				"pyre", -- Python
-				"cmake", -- CMake
-				"texlab", -- LaTeX
+		lspkind.init({
+			mode = "symbol_text",
+			preset = "codicons",
+			symbol_map = {
+				Text = "󰉿",
+				Method = "󰆧",
+				Function = "󰊕",
+				Constructor = "󰑐",
+				Field = "󰜢",
+				Variable = "󰀫",
+				Class = "󰠱",
+				Interface = "󰜰",
+				Module = "󰏖",
+				Property = "󰜢",
+				Unit = "󰑭",
+				Value = "󰎠",
+				Enum = "󰕘",
+				Keyword = "󰌋",
+				Snippet = "󰘦",
+				Color = "󰏘",
+				File = "󰈙",
+				Reference = "󰈇",
+				Folder = "󰉋",
+				EnumMember = "󰕘",
+				Constant = "󰏿",
+				Struct = "󰙅",
+				Event = "󰉁",
+				Operator = "󰆕",
+				TypeParameter = "󰊄",
 			},
+		})
+
+		----------------------------------------
+		-- COMPLETION MENU CONFIGURATION
+		----------------------------------------
+		require("cmp").setup({
+			max_item_count = 5,
+			window = {
+				completion = {
+					max_width = 40,
+					max_height = 5,
+					border = "rounded",
+					winhighlight = "Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:PmenuSel",
+				},
+			},
+			formatting = {
+				format = lspkind.cmp_format({
+					mode = "symbol_text",
+					maxwidth = 30,
+					ellipsis_char = "...",
+					show_labelDetails = true,
+					menu = {
+						buffer = "[Buffer]",
+						nvim_lsp = "[LSP]",
+						luasnip = "[Snippet]",
+						path = "[Path]",
+					},
+				}),
+			},
+		})
+
+		----------------------------------------
+		-- LSP CONFIGURATIONS
+		----------------------------------------
+		local on_attach = function(client, bufnr)
+			local opts = { noremap = true, silent = true, buffer = bufnr }
+			vim.keymap.set("n", "gd", telescope.lsp_definitions, opts)
+			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+			vim.keymap.set("n", "gi", telescope.lsp_implementations, opts)
+			vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+			vim.keymap.set("n", "gr", telescope.lsp_references, opts)
+		end
+
+		-- C/C++ LSP configuration
+		lspconfig.clangd.setup({
+			cmd = {
+				"clangd",
+				"--query-driver=**/mingw64/bin/gcc.exe,**/mingw64/bin/g++.exe",
+				"--header-insertion=never",
+				"--all-scopes-completion",
+				"--offset-encoding=utf-16",
+			},
+			capabilities = capabilities,
+			root_dir = lspconfig.util.root_pattern(
+				".clangd",
+				".clang-tidy",
+				".clang-format",
+				"compile_commands.json",
+				"compile_flags.txt",
+				"configure.ac",
+				".git"
+			),
+			on_attach = on_attach,
+		})
+
+		-- Python LSP configuration
+		lspconfig.pyright.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		-- LaTeX LSP configuration
+		lspconfig.texlab.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
 		})
 
 		----------------------------------------
@@ -47,32 +154,24 @@ return {
 		mason_tool_installer.setup({
 			ensure_installed = {
 				-- Formatters
-				"clang-format", -- C, C++
-				"black", -- Python
-				"google-java-format", -- Java
-				"latexindent", -- LaTeX
+				"clang-format",
+				-- "google-java-format", -- Commented out until needed
+				-- "latexindent", -- Commented out until needed
 				-- Linters
-				"ruff", -- Python
-				-- "cpplint", -- C, C++
+				-- "ruff", -- Commented out until needed
 			},
 		})
 
 		----------------------------------------
-		-- NULL-LS SETUP
+		-- NONE-LS SETUP
 		----------------------------------------
-		null_ls.setup({
+		none_ls.setup({
 			sources = {
-				-- FORMATTERS ------------------------
-				null_ls.builtins.formatting.clang_format, -- C, C++
-				null_ls.builtins.formatting.black, -- Python
-				null_ls.builtins.formatting.google_java_format, -- Java
-				null_ls.builtins.formatting.latexindent, -- LaTeX
-
-				-- LINTERS ---------------------------
-				null_ls.builtins.diagnostics.ruff.with({
-					extra_args = { "--select=E", "--ignore=F821,F401,F403,F405,F,W,C,N,UP,B,A,COM,C4,DTZ,T10,ISC,G,PIE,T20,PYI,PT,Q,RSE,RET,SLF,SLOT,SIM,TID,TCH,ARG,PTH,ERA,PD,PGH,PL,TRY,NPY,AIR,PERF,FURB,LOG,RUF" }
-				}), -- Python
-				-- null_ls.builtins.diagnostics.cpplint, -- C, C++
+				-- FORMATTERS
+				none_ls.builtins.formatting.clang_format,
+				none_ls.builtins.formatting.black,
+				-- LINTERS
+				-- none_ls.builtins.diagnostics.ruff, -- Commented out until installed
 			},
 		})
 
