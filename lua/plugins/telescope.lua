@@ -16,6 +16,26 @@ return {
 		local transform_mod = require("telescope.actions.mt").transform_mod
 		local builtin = require("telescope.builtin")
 
+		-- Detect availability of search tools for RHEL-friendly fallbacks
+		local has_rg = vim.fn.executable("rg") == 1
+		local has_fd = vim.fn.executable("fd") == 1
+		local has_git = vim.fn.executable("git") == 1
+
+		-- Determine a file listing command compatible with the current system
+		local find_files_cmd
+		if has_rg then
+			find_files_cmd = { "rg", "--files", "--hidden", "-g", "!.git" }
+		elseif has_fd then
+			find_files_cmd = { "fd", "--type", "f", "--hidden", "--strip-cwd-prefix", "--exclude", ".git" }
+		else
+			find_files_cmd = { "find", ".", "-type", "f", "-not", "-path", "*/.git/*" }
+		end
+
+		-- Check if we're in a git repository
+		local function is_git_repo()
+			return vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null"):match("true") ~= nil
+		end
+
 		----------------------------------------
 		-- CUSTOM ACTIONS
 		----------------------------------------
@@ -36,6 +56,34 @@ return {
 		----------------------------------------
 		telescope.setup({
 			defaults = {
+				-- Use ripgrep when available; fall back to git grep or regular grep
+				vimgrep_arguments = has_rg and {
+					"rg",
+					"--color=never",
+					"--no-heading",
+					"--with-filename",
+					"--line-number",
+					"--column",
+					"--smart-case",
+				} or (has_git and is_git_repo()) and {
+					"git",
+					"grep",
+					"--line-number",
+					"--column",
+					"--no-color",
+					"-I",
+					"-E",
+				} or {
+					"grep",
+					"-R",
+					"-n",
+					"--binary-files=without-match",
+					"-E",
+					"-i",
+					"--color=never",
+					"--exclude-dir=.git",
+					".",
+				},
 				preview = {
 					treesitter = true,
 					check_mime_type = true,
@@ -85,12 +133,18 @@ return {
 					theme = "ivy", -- Modern dropdown theme
 					previewer = false,
 					hidden = true,
-					find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
+					find_command = find_files_cmd,
 				},
 				live_grep = {
 					theme = "ivy",
 					additional_args = function()
-						return { "--hidden", "-g", "!.git" }
+						if has_rg then
+							return { "--hidden", "-g", "!.git" }
+						elseif has_git and is_git_repo() then
+							return {}
+						else
+							return {}
+						end
 					end,
 				},
 				git_commits = {
@@ -150,7 +204,9 @@ return {
 		-- LOAD EXTENSIONS
 		----------------------------------------
 		telescope.load_extension("ui-select") -- UI select extension
-		telescope.load_extension("live_grep_args")
+		if has_rg then
+			telescope.load_extension("live_grep_args")
+		end
 
 		----------------------------------------
 		-- KEY MAPPINGS
@@ -159,8 +215,25 @@ return {
 
 		-- General keybindings
 		keymap.set("n", "<C-f>", "<cmd>Telescope find_files<cr>", { desc = "[f]iles" })
-		keymap.set("n", "<C-t>", "<cmd>Telescope live_grep<cr>", { desc = "[s]tring" })
-		keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+		keymap.set("n", "<C-t>", function()
+			-- Debug: Print what tools we have
+			print("Debug: has_rg=" .. tostring(has_rg) .. ", has_git=" .. tostring(has_git))
+			if has_git then
+				print("Debug: is_git_repo=" .. tostring(is_git_repo()))
+			end
+			
+			-- Try the simplest approach first - just call live_grep without any conditions
+			builtin.live_grep({
+				prompt_title = "Live Grep (Debug)",
+			})
+		end, { desc = "Live grep search" })
+		if has_rg then
+			keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+		else
+			keymap.set("n", "<leader>fg", function()
+				builtin.live_grep()
+			end, { desc = "Live grep" })
+		end
 
 		-- Symbol search keymaps
 		keymap.set("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "[d]ocument symbols" })
