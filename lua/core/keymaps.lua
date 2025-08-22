@@ -85,3 +85,8 @@ map("v", ">", ">gv", { desc = "Increase indent and maintain selection" })
 map("n", "<leader>sh", ":split<CR>", { desc = "Horizontal split" })
 map("n", "<leader>sv", ":vsplit<CR>", { desc = "Vertical split" })
 map("n", "<leader>sc", ":close<CR>", { desc = "Vertical split" })
+
+-----------------------------------------------------------
+-- Buffer Management
+-----------------------------------------------------------
+map("n", "<C-q>", ":bd<CR>", { desc = "Close current buffer" })

@@ -10,6 +10,8 @@ return {
 					"cpp",
 					"cmake",
 					"lua",
+					"tcl",
+					"markdown",
 				},
 				highlight = {
 					enable = true,

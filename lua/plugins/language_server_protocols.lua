@@ -115,14 +115,25 @@ return {
 		end
 
 		-- C/C++ LSP configuration
+		local clangd_cmd = {
+			"clangd",
+			"--header-insertion=never",
+			"--all-scopes-completion",
+		}
+
+		-- Add platform-specific options
+		local os_name = vim.loop.os_uname().sysname
+		if os_name == "Windows_NT" then
+			-- Windows-specific clangd configuration
+			table.insert(clangd_cmd, "--query-driver=**/mingw64/bin/gcc.exe,**/mingw64/bin/g++.exe")
+			table.insert(clangd_cmd, "--offset-encoding=utf-16")
+		else
+			-- Linux/macOS configuration
+			table.insert(clangd_cmd, "--offset-encoding=utf-8")
+		end
+
 		lspconfig.clangd.setup({
-			cmd = {
-				"clangd",
-				"--query-driver=**/mingw64/bin/gcc.exe,**/mingw64/bin/g++.exe",
-				"--header-insertion=never",
-				"--all-scopes-completion",
-				"--offset-encoding=utf-16",
-			},
+			cmd = clangd_cmd,
 			capabilities = capabilities,
 			root_dir = lspconfig.util.root_pattern(
 				".clangd",
@@ -148,6 +159,8 @@ return {
 			on_attach = on_attach,
 		})
 
+
+
 		----------------------------------------
 		-- TOOL INSTALLER SETUP
 		----------------------------------------
@@ -158,7 +171,7 @@ return {
 				-- "google-java-format", -- Commented out until needed
 				-- "latexindent", -- Commented out until needed
 				-- Linters
-				-- "ruff", -- Commented out until needed
+				"ruff", -- Commented out until needed
 			},
 		})
 
