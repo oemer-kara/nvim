@@ -19,7 +19,7 @@ return {
 		----------------------------------------
 		-- BEHAVIOR SETTINGS
 		----------------------------------------
-		-- Characters where pair completion is disabled
+		-- Characters where pair completion is isabled
 		disable_in_macro = true,
 		disable_in_visualblock = true,
 		modes = {

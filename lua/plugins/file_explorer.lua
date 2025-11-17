@@ -19,6 +19,7 @@ return {
 		{ "<C-e>", "<cmd>Neotree toggle float<cr>", silent = true, desc = "Float File Explorer" },
 	},
 
+
 	-----------------------------------
 	-- Configuration
 	-----------------------------------
@@ -28,7 +29,7 @@ return {
 
 		require("neo-tree").setup({
 			popup_border_style = "rounded",
-			auto_clean_after_session_restore = false,
+			auto_clean_after_session_restore = true,
 			enable_git_status = true,
 			enable_modified_markers = true,
 			enable_diagnostics = true,
@@ -37,36 +38,35 @@ return {
 			-----------------------------------
 			-- Component Configurations
 			-----------------------------------
-			default_component_configs = {
-				indent = {
-					with_markers = true,
-					with_expanders = true,
-				},
-				modified = {
-					symbol = "●",
-					highlight = "NeoTreeModified",
-				},
-				icon = {
-					folder_closed = "",
-					folder_open = "",
-					folder_empty = "",
-					folder_empty_open = "",
-				},
-				git_status = {
-					symbols = {
-						added = "",
-						deleted = "",
-						modified = "",
-						renamed = "",
-						untracked = "",
-						ignored = "",
-						unstaged = "",
-						staged = "",
-						conflict = "",
-					},
-				},
-			},
-
+            default_component_configs = {
+                indent = {
+                    with_markers = true,
+                    with_expanders = true,
+                },
+                modified = {
+                    symbol = "●",
+                    highlight = "NeoTreeModified",
+                },
+                icon = {
+                    folder_closed = "",
+                    folder_open = "",
+                    folder_empty = "",
+                    folder_empty_open = "",
+                },
+                git_status = {
+                    symbols = {
+                        added     = "", -- plus
+                        deleted   = "", -- minus
+                        modified  = "", -- small dot
+                        renamed   = "",
+                        untracked = "",
+                        ignored   = "",
+                        unstaged  = "",
+                        staged    = "",
+                        conflict  = "",
+                    },
+                },
+            },
 			-----------------------------------
 			-- Window Configurations
 			-----------------------------------
@@ -120,8 +120,6 @@ return {
 				statusline = false,
 				sources = {
 					{ source = "filesystem", display_name = " 󰉓 Files " },
-					{ source = "buffers", display_name = " 󰈙 Buffers " },
-					{ source = "git_status", display_name = " 󰊢 Git " },
 				},
 			},
 

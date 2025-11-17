@@ -4,7 +4,7 @@ return {
 	event = "VeryLazy",
 	opts = {
 		-----------------------------------
-		-- Mappings Configuration
+		-- { Mappings Configuration }
 		-----------------------------------
 		mappings = {
 			add = "sa", -- Add surrounding

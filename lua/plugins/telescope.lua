@@ -51,8 +51,8 @@ return {
 
 		-- Key mappings
 		local keymap = vim.keymap
-		keymap.set("n", "<C-f>", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
-		keymap.set("n", "<C-t>", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
+		keymap.set("n", "<C-t>", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
+		keymap.set("n", "<C-f>", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
 		keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
 		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
 		keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })
