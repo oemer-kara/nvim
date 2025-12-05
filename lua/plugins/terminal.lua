@@ -45,10 +45,23 @@ return {
 
 			local cmd = open_cmd or "edit"
 			vim.cmd(string.format("%s +%d %s", cmd, line_num or 1, vim.fn.fnameescape(target)))
-			if col_num and col_num > 0 then
-				vim.fn.cursor(line_num or 1, col_num)
-			end
+			-- Always place the cursor on the parsed column (defaults to col 1)
+			vim.fn.cursor(line_num or 1, (col_num and col_num > 0) and col_num or 1)
 			return true
+		end
+
+		local function jump_to_first_error_line()
+			local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+			for idx, l in ipairs(lines) do
+				local file, line_num, col = parse_error_line(l)
+				if file then
+					vim.cmd.stopinsert()
+					vim.api.nvim_win_set_cursor(0, { idx, (col and col > 0) and col or 1 })
+					return true
+				end
+			end
+			vim.notify("No file/line found in buffer", vim.log.levels.WARN)
+			return false
 		end
 
 		local function open_error_from_line(line, open_cmd)
@@ -70,7 +83,7 @@ return {
 			end
 			vim.cmd.stopinsert()
 			vim.cmd("ToggleTerm")
-			open_target(file, line_num, col_num, "tabedit")
+			return open_target(file, line_num, col_num, "edit")
 		end
 
 		local shell = vim.o.shell
@@ -93,14 +106,19 @@ return {
 		vim.api.nvim_set_keymap("t", "<C-\\>", "<Cmd>ToggleTerm<CR>", { noremap = true, silent = true })
 		vim.api.nvim_set_keymap("t", "<C-q>",  "<Cmd>ToggleTerm<CR>", { noremap = true, silent = true })
 
-		vim.keymap.set("n", "<leader>e", function()
+		local function jump_to_error()
+			if vim.bo.buftype == "terminal" then
+				return open_error_from_terminal()
+			end
+
 			local line = vim.api.nvim_get_current_line()
 			if not open_error_from_line(line) then
 				vim.notify("No file/line found in this line", vim.log.levels.WARN)
 			end
-		end, { noremap = true, silent = true, desc = "Jump from normal line error" })
+		end
 
-		-- Exit terminal mode
+		vim.keymap.set({ "n", "t" }, "E", jump_to_first_error_line, { noremap = true, silent = true, desc = "Jump to first error line" })
+		vim.keymap.set("n", "<CR>", jump_to_error, { noremap = true, silent = true, desc = "Jump from error line (Enter)" })
 		vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 	end,
 }
