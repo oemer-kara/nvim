@@ -23,6 +23,9 @@ return {
 		local telescope = require("telescope.builtin")
 		local lspkind = require("lspkind")
 
+		-- Add position encoding support for LSP
+		capabilities.offsetEncoding = { "utf-16", "utf-8" }
+
 		----------------------------------------
 		-- MASON CORE SETUP
 		----------------------------------------
@@ -135,6 +138,7 @@ return {
 		lspconfig.clangd.setup({
 			cmd = clangd_cmd,
 			capabilities = capabilities,
+			offset_encoding = "utf-16",
 			root_dir = lspconfig.util.root_pattern(
 				".clangd",
 				".clang-tidy",
@@ -167,11 +171,11 @@ return {
 		mason_tool_installer.setup({
 			ensure_installed = {
 				-- Formatters
-				"clang-format",
+				-- "clang-format", -- Disabled: using system clang-format instead
 				-- "google-java-format", -- Commented out until needed
 				-- "latexindent", -- Commented out until needed
 				-- Linters
-				"ruff", -- Commented out until needed
+				-- "ruff", -- Commented out until needed
 			},
 		})
 
@@ -181,7 +185,9 @@ return {
 		none_ls.setup({
 			sources = {
 				-- FORMATTERS
-				none_ls.builtins.formatting.clang_format,
+				none_ls.builtins.formatting.clang_format.with({
+					extra_args = { "--style=file" },
+				}),
 				none_ls.builtins.formatting.black,
 				-- LINTERS
 				-- none_ls.builtins.diagnostics.ruff, -- Commented out until installed

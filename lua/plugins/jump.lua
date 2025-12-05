@@ -3,9 +3,8 @@ return {
 	config = function()
         require('leap').opts.safe_labels = ''
 
-        -- Simple leap setup - just use 's' to jump anywhere
-		vim.keymap.set({'n', 'x', 'o'}, 's', '<Plug>(leap-forward)', {silent = true, desc = "Leap forward"})
-		vim.keymap.set({'n', 'x', 'o'}, 'S', '<Plug>(leap-backward)', {silent = true, desc = "Leap backward"})
+        -- Simple leap setup - just use 's' to jump anywhere (both directions)
+		vim.keymap.set({'n', 'x', 'o'}, 's', '<Plug>(leap)', {silent = true, desc = "Leap anywhere"})
 
         vim.api.nvim_set_hl(0, 'LeapBackdrop', { link = 'Comment' })
         vim.api.nvim_create_autocmd('ColorScheme', {
