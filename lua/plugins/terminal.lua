@@ -106,8 +106,7 @@ return {
 			vim.cmd.stopinsert()
 			vim.cmd("ToggleTerm")
 			vim.fn.setqflist({}, "r", { title = "Terminal Errors", items = items })
-			vim.cmd("copen")
-			vim.cmd("cfirst")
+			vim.cmd("Trouble qflist open")
 		end
 
 		local function open_error_from_line(line, open_cmd)
