@@ -13,7 +13,7 @@ return {
 			enabled = true,
 			auto_save = true,
 			auto_restore = true,
-			args_allow_single_directory = false,
+			args_allow_single_directory = true,
 			args_allow_files_auto_save = false,
 		})
 	end,

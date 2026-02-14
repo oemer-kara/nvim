@@ -53,52 +53,39 @@ return {
 	},
 
 	-----------------------------------
-	-- Diffview (diff viewer & merge conflict resolution)
+	-- Lazygit (full git UI via toggleterm)
 	-----------------------------------
 	{
-		"sindrets/diffview.nvim",
-		cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
+		"akinsho/toggleterm.nvim",
 		keys = {
-			{ "<leader>gv", "<cmd>DiffviewOpen<cr>", desc = "Open diff view" },
-			{ "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
-			{ "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "Branch history" },
-			{ "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Close diff view" },
-		},
-		opts = {
-			enhanced_diff_hl = true,
-			view = {
-				merge_tool = {
-					layout = "diff3_mixed",
-				},
-			},
-		},
-	},
+			{
+				"<leader>gg",
+				function()
+					local Terminal = require("toggleterm.terminal").Terminal
+					local git_root = vim.fn.system("git -C " .. vim.fn.expand("%:p:h") .. " rev-parse --show-toplevel")
+					git_root = vim.fn.trim(git_root)
 
-	-----------------------------------
-	-- Neogit (full git UI: push, pull, commit, etc.)
-	-----------------------------------
-	{
-		"NeogitOrg/neogit",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"sindrets/diffview.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
-		cmd = "Neogit",
-		keys = {
-			{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Open Neogit" },
-			{ "<leader>gC", "<cmd>Neogit commit<cr>", desc = "Git commit" },
-			{ "<leader>gP", "<cmd>Neogit push<cr>", desc = "Git push" },
-			{ "<leader>gl", "<cmd>Neogit pull<cr>", desc = "Git pull" },
-		},
-		opts = {
-			integrations = {
-				diffview = true,
-				telescope = true,
-			},
-			signs = {
-				section = { "", "" },
-				item = { "", "" },
+					if vim.v.shell_error ~= 0 then
+						vim.notify("Not a git repository", vim.log.levels.WARN)
+						return
+					end
+
+					local Terminal = require("toggleterm.terminal").Terminal
+					local lazygit = Terminal:new({
+						cmd = "lazygit",
+						hidden = true,
+						direction = "float",
+						dir = git_root,
+						float_opts = { border = "curved" },
+						on_open = function(term)
+							vim.cmd("startinsert!")
+							-- Remove Esc mapping so lazygit can use it
+							vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<Esc>", "<Esc>", { noremap = true, silent = true })
+						end,
+					})
+					lazygit:toggle()
+				end,
+				desc = "Open Lazygit",
 			},
 		},
 	},

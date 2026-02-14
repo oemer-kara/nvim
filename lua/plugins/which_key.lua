@@ -97,10 +97,7 @@ return {
 			-----------------------------------
 			-- Git
 			-----------------------------------
-			{ "<leader>gg", desc = "Open Neogit" },
-			{ "<leader>gC", desc = "Git commit" },
-			{ "<leader>gP", desc = "Git push" },
-			{ "<leader>gl", desc = "Git pull" },
+			{ "<leader>gg", desc = "Open Lazygit" },
 			{ "<leader>gb", desc = "Blame line" },
 			{ "<leader>gB", desc = "Toggle line blame" },
 			{ "<leader>gs", desc = "Stage hunk" },
@@ -111,10 +108,6 @@ return {
 			{ "<leader>gp", desc = "Preview hunk" },
 			{ "<leader>gd", desc = "Diff this" },
 			{ "<leader>gD", desc = "Diff against last commit" },
-			{ "<leader>gv", desc = "Open diff view" },
-			{ "<leader>gh", desc = "File history" },
-			{ "<leader>gH", desc = "Branch history" },
-			{ "<leader>gc", desc = "Close diff view" },
 			{ "]h", desc = "Next git hunk" },
 			{ "[h", desc = "Previous git hunk" },
 
