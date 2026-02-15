@@ -3,7 +3,10 @@
     "allow": [
       "Bash(delta:*)",
       "Bash(git diff:*)",
-      "Bash(git check-attr:*)"
+      "Bash(git check-attr:*)",
+      "Bash(git config:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:codeberg.org)"
     ]
   }
 }

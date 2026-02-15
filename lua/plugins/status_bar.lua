@@ -45,6 +45,7 @@ return {
 				},
 				lualine_b = {
 					"branch", -- Simple branch display
+					"diff",
 				},
 				lualine_c = {
 					{
@@ -71,12 +72,24 @@ return {
 				},
 				lualine_x = {
 					{
+						function()
+							local reg = vim.fn.reg_recording()
+							if reg ~= "" then
+								return "Recording @" .. reg
+							end
+							return ""
+						end,
+					},
+					"encoding",
+					"fileformat",
+					{
 						"filetype",
 						icons_enabled = true,
 						icon = { align = "right" }, -- Align filetype icon to the right
 					},
 				},
 				lualine_y = {
+					"location",
 					{
 						"progress",
 						fmt = function(str)

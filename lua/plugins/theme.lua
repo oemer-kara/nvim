@@ -108,6 +108,22 @@ return {
 	{ "mhartington/oceanic-next", lazy = true },
 	{ "rafamadriz/neon", lazy = true },
 	{ "yashguptaz/calvera-dark.nvim", lazy = true },
+	{ "Everblush/nvim", name = "everblush", lazy = true },
+	{ "kvrohit/substrata.nvim", lazy = true },
+	{ "fenetikm/falcon", lazy = true },
+	{ "embark-theme/vim", name = "embark", lazy = true },
+	{ "jim-at-jibba/ariake.nvim", lazy = true },
+	{ "adisen99/apprentice.nvim", dependencies = "rktjmp/lush.nvim", lazy = true },
+	{ "rmehri01/onenord.nvim", lazy = true },
+	{ "cpea2506/one_monokai.nvim", lazy = true },
+	{ "AstroNvim/astrotheme", lazy = true },
+	{ "Mofiqul/adwaita.nvim", lazy = true },
+	{ "hardhackerlabs/theme-vim", name = "hardhacker", lazy = true },
+	{ "metalelf0/jellybeans-nvim", dependencies = "rktjmp/lush.nvim", lazy = true },
+	{ "NTBBloodbath/doom-one.nvim", lazy = true },
+	{ "jesseleite/nvim-noirbuddy", dependencies = "tjdevries/colorbuddy.nvim", lazy = true },
+	{ "mellow-theme/mellow.nvim", lazy = true },
+	{ "Yazeed1s/minimal.nvim", lazy = true },
 
 	-- Theme switcher
 	{
@@ -297,6 +313,41 @@ return {
 				{ name = "Neon", colorscheme = "neon" },
 				-- Calvera
 				{ name = "Calvera Dark", colorscheme = "calvera" },
+				-- Everblush
+				{ name = "Everblush", colorscheme = "everblush" },
+				-- Substrata
+				{ name = "Substrata", colorscheme = "substrata" },
+				-- Falcon
+				{ name = "Falcon", colorscheme = "falcon" },
+				-- Embark
+				{ name = "Embark", colorscheme = "embark" },
+				-- Ariake
+				{ name = "Ariake Dark", colorscheme = "ariake-dark" },
+				-- Apprentice
+				{ name = "Apprentice", colorscheme = "apprentice" },
+				-- OneNord
+				{ name = "OneNord", colorscheme = "onenord" },
+				-- One Monokai
+				{ name = "One Monokai", colorscheme = "one_monokai" },
+				-- AstroTheme
+				{ name = "AstroDark", colorscheme = "astrodark" },
+				{ name = "AstroLight", colorscheme = "astrolight" },
+				{ name = "AstroMars", colorscheme = "astromars" },
+				-- Adwaita
+				{ name = "Adwaita Dark", colorscheme = "adwaita" },
+				-- HardHacker
+				{ name = "HardHacker", colorscheme = "hardhacker" },
+				-- Jellybeans
+				{ name = "Jellybeans", colorscheme = "jellybeans-nvim" },
+				-- Doom One
+				{ name = "Doom One", colorscheme = "doom-one" },
+				-- Noirbuddy
+				{ name = "Noirbuddy", colorscheme = "noirbuddy" },
+				-- Mellow
+				{ name = "Mellow", colorscheme = "mellow" },
+				-- Minimal
+				{ name = "Minimal", colorscheme = "minimal" },
+				{ name = "Minimal Base16", colorscheme = "minimal-base16" },
 			},
 			livePreview = true,
 		},

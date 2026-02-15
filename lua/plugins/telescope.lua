@@ -3,6 +3,7 @@ return {
 	branch = "0.1.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
+		"nvim-telescope/telescope-ui-select.nvim",
 	},
 	config = function()
 		local telescope = require("telescope")
@@ -20,12 +21,24 @@ return {
 					"--smart-case",
 					"--hidden",
 				},
+				prompt_prefix = "   ",
+				selection_caret = "  ",
+				entry_prefix = "  ",
+				multi_icon = " 󰄬 ",
+				sorting_strategy = "ascending",
+				results_title = false,
+				borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+				color_devicons = true,
+				path_display = { "truncate" },
+				winblend = 10,
 				mappings = {
 					i = {
 						["<C-k>"] = actions.move_selection_previous,
 						["<C-j>"] = actions.move_selection_next,
 						["<C-q>"] = actions.smart_send_to_qflist,
 						["<Esc>"] = actions.close,
+						["<C-u>"] = actions.preview_scrolling_up,
+						["<C-d>"] = actions.preview_scrolling_down,
 					},
 					n = {
 						["q"] = actions.close,
@@ -40,18 +53,41 @@ return {
 						height = 0.9,
 						preview_cutoff = 40,
 						prompt_position = "top",
+						preview_height = 0.5,
+						mirror = true,
 					},
 				},
 			},
 			pickers = {
 				find_files = {
 					hidden = true,
+					previewer = true,
+					prompt_title = " Files",
 				},
 				live_grep = {
 					additional_args = { "--hidden", "-g", "!.git" },
+					prompt_title = " Grep",
+				},
+				buffers = {
+					prompt_title = " Buffers",
+					sort_mru = true,
+					ignore_current_buffer = true,
+				},
+				help_tags = {
+					prompt_title = "󰋖 Help",
+				},
+				lsp_references = {
+					prompt_title = " References",
+				},
+			},
+			extensions = {
+				["ui-select"] = {
+					require("telescope.themes").get_dropdown(),
 				},
 			},
 		})
+
+		telescope.load_extension("ui-select")
 
 		-- Key mappings
 		local keymap = vim.keymap
