@@ -8,6 +8,7 @@ return {
 	config = function()
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
+		local open_trouble = require("trouble.sources.telescope").open
 
 		telescope.setup({
 			defaults = {
@@ -35,7 +36,8 @@ return {
 					i = {
 						["<C-k>"] = actions.move_selection_previous,
 						["<C-j>"] = actions.move_selection_next,
-						["<C-q>"] = actions.smart_send_to_qflist,
+						["<C-q>"] = open_trouble,
+						["<C-e>"] = actions.smart_send_to_qflist + actions.open_qflist,
 						["<Esc>"] = actions.close,
 						["<C-u>"] = actions.preview_scrolling_up,
 						["<C-d>"] = actions.preview_scrolling_down,
@@ -43,6 +45,8 @@ return {
 					n = {
 						["q"] = actions.close,
 						["<Esc>"] = actions.close,
+						["<C-q>"] = open_trouble,
+						["<C-e>"] = actions.smart_send_to_qflist + actions.open_qflist,
 					},
 				},
 				file_ignore_patterns = { "node_modules", ".git" },
@@ -88,6 +92,15 @@ return {
 		})
 
 		telescope.load_extension("ui-select")
+
+		-- Make the selected entry clearly visible (re-apply on colorscheme change)
+		local function set_telescope_hl()
+			local hl = vim.api.nvim_set_hl
+			hl(0, "TelescopeSelection", { reverse = true, bold = true })
+			hl(0, "TelescopeSelectionCaret", { reverse = true, bold = true })
+		end
+		set_telescope_hl()
+		vim.api.nvim_create_autocmd("ColorScheme", { callback = set_telescope_hl })
 
 		-- Key mappings
 		local keymap = vim.keymap

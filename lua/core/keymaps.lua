@@ -44,9 +44,9 @@ function VisualBlockSearchReplace()
 	-- Replace all instances in each line
 	for i, line in ipairs(lines) do
 		-- Use Vim's substitute so users can use familiar Vim regex patterns
-		local new_line = vim.fn.substitute(line, search_term, replace_term, "g")
+		local patates_line = vim.fn.substitute(line, search_term, replace_term, "g")
 		-- Set the modified line back
-		vim.fn.setline(start_line + i - 1, new_line)
+		vim.fn.setline(start_line + i - 1, patates_line)
 	end
 end
 
