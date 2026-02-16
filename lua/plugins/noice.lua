@@ -5,6 +5,14 @@ return {
 		"MunifTanjim/nui.nvim",
 	},
 	opts = {
+		views = {
+			cmdline_popup = {
+				position = {
+					row = "50%",
+					col = "50%",
+				},
+			},
+		},
 		cmdline = {
 			enabled = true,
 			view = "cmdline_popup",

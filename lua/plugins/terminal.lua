@@ -53,6 +53,9 @@ return {
 			return true
 		end
 
+
+
+
 		local function jump_to_first_error_line()
 			local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 			for idx = #lines, 1, -1 do
