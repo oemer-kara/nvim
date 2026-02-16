@@ -33,7 +33,7 @@ vim.opt.scrolloff = 10 -- Keep 10 lines visible above/below cursor when scrollin
 vim.opt.sidescrolloff = 8 -- Keep 10 columns visible when scrolling horizontally
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = true -- Convert tabs to spaces
+vim.opt.expandtab = false -- Use tabs for indentation
 
 -----------------------------------------------------------
 -- Folding
