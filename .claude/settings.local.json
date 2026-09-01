@@ -6,7 +6,21 @@
       "Bash(git check-attr:*)",
       "Bash(git config:*)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:codeberg.org)"
+      "WebFetch(domain:codeberg.org)",
+      "Bash(nvim --headless -c \"luafile c:/Users/kara/AppData/Local/nvim/lua/plugins/theme.lua\" -c \"qa\")",
+      "WebSearch",
+      "WebFetch(domain:dotfyle.com)",
+      "WebFetch(domain:vimcolorschemes.com)",
+      "Bash(nvim --headless -c \"lua local ok,err=pcall\\(dofile,'c:/Users/kara/AppData/Local/nvim/lua/plugins/theme.lua'\\); if not ok then print\\('ERR: '..tostring\\(err\\)\\) else print\\('OK'\\) end\" -c \"qa!\")",
+      "Bash(ls \"C:\\\\Users\\\\kara\\\\AppData\\\\Local\\\\nvim-data\\\\lazy\\\\starry.nvim\\\\colors\\\\\" | grep -o '[^/]*$')",
+      "Read(//c/Users/kara/AppData/Local/nvim-data/lazy/starry.nvim/colors\" | grep -o '[^/**)",
+      "Read(//c/Users/kara/AppData/Local/nvim/$USERPROFILE/Documents/PowerShell/**)",
+      "Read(//c/Users/kara/AppData/Local/nvim/$USERPROFILE/Documents/WindowsPowerShell/**)",
+      "Bash(echo:*)",
+      "Bash(~/AppData/Local/nvim-data/mason/bin/neocmakelsp.cmd --version)",
+      "Bash(~/AppData/Local/nvim-data/mason/bin/neocmakelsp.cmd --help)",
+      "Bash(~/AppData/Local/nvim-data/mason/bin/neocmakelsp.cmd --stdio)",
+      "Bash(timeout 2 ~/AppData/Local/nvim-data/mason/bin/neocmakelsp.cmd stdio)"
     ]
   }
 }

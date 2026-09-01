@@ -134,6 +134,23 @@ return {
 			on_attach = on_attach,
 		})
 
+		-- CMake LSP configuration
+		lspconfig.neocmake.setup({
+			-- neocmakelsp >=0.10 uses the `stdio` subcommand, not `--stdio`
+			-- (lspconfig's default cmd is `--stdio`, which fails to start the server)
+			cmd = { "neocmakelsp", "stdio" },
+			capabilities = capabilities,
+			filetypes = { "cmake" },
+			root_dir = lspconfig.util.root_pattern("CMakeLists.txt", ".git"),
+			init_options = {
+				format = { enable = true },
+				lint = { enable = true },
+				scan_cmake_in_package = true,
+			},
+			single_file_support = true,
+			on_attach = on_attach,
+		})
+
 
 
 		----------------------------------------
@@ -141,6 +158,8 @@ return {
 		----------------------------------------
 		mason_tool_installer.setup({
 			ensure_installed = {
+				-- LSP servers
+				"neocmakelsp",
 				-- Formatters
 				-- "clang-format", -- Disabled: using system clang-format instead
 				-- "google-java-format", -- Commented out until needed
