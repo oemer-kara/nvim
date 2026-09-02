@@ -11,8 +11,12 @@ return {
 				cursor = {
 					enable = true,
 					-- Supports any number of symbols
-					symbols = { "⎺", "⎻", "⎼", "⎽" },
-					-- symbols = { "⎻", "⎼" }
+					-- U+23BA..23BD ("horizontal scan line") were used here, but no
+					-- Nerd Font ships them. The terminal substituted a fallback face
+					-- whose advance width did not match the cell, which smeared the
+					-- scrollbar overlay. These are block/box-drawing chars that Ghostty
+					-- draws itself, so they always tile at exactly one cell.
+					symbols = { "▔", "─", "▁" },
 					-- Highlights:
 					-- - SatelliteCursor (default links to NonText)
 				},

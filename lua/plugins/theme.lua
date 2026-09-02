@@ -356,7 +356,8 @@ return {
 				{ name = "Bluloco Dark", colorscheme = "bluloco-dark" },
 				{ name = "Bluloco Light", colorscheme = "bluloco-light" },
 				-- OneDarkPro
-				{ name = "OneDark Pro", colorscheme = "onedark" },
+				{ name = "OneDark Pro Light", colorscheme = "onelight" },
+				{ name = "OneDark Pro Vaporwave", colorscheme = "vaporwave" },
 				{ name = "OneDark Pro Vivid", colorscheme = "onedark_vivid" },
 				{ name = "OneDark Pro Dark", colorscheme = "onedark_dark" },
 				-- NeoSolarized
@@ -388,8 +389,9 @@ return {
 				-- Oh Lucy
 				{ name = "Oh Lucy", colorscheme = "oh-lucy" },
 				{ name = "Oh Lucy Evening", colorscheme = "oh-lucy-evening" },
-				-- Pywal
-				{ name = "Pywal", colorscheme = "pywal" },
+				-- Pywal: needs the external `wal` tool to have generated
+				-- ~/.cache/wal/colors-wal.vim. Without it the scheme aborts with E484,
+				-- so it is not listed. Re-add it if you start using pywal.
 				-- Noctis
 				{ name = "Noctis", colorscheme = "noctis" },
 				-- Monochrome
@@ -409,7 +411,7 @@ return {
 				-- Embark
 				{ name = "Embark", colorscheme = "embark" },
 				-- Ariake
-				{ name = "Ariake Dark", colorscheme = "ariake-dark" },
+				{ name = "Ariake", colorscheme = "ariake" },
 				-- Apprentice
 				{ name = "Apprentice", colorscheme = "apprentice" },
 				-- OneNord
@@ -464,12 +466,14 @@ return {
 				-- Monokai NighTasty
 				{ name = "Monokai NighTasty", colorscheme = "monokai-nightasty" },
 				-- Witch
-				{ name = "Witch", colorscheme = "witch" },
+				{ name = "Witch Dark", colorscheme = "witch-dark" },
+				{ name = "Witch Light", colorscheme = "witch-light" },
 				-- Darkearth
 				{ name = "Darkearth", colorscheme = "darkearth" },
 				{ name = "Lightearth", colorscheme = "lightearth" },
-				-- Evergarden (everviolet)
-				{ name = "Evergarden Violet", colorscheme = "evergarden" },
+				-- everviolet/nvim registers the same names as comfysage/evergarden,
+				-- so point this at a seasonal variant that was otherwise unreachable.
+				{ name = "Evergarden Winter", colorscheme = "evergarden-winter" },
 				-- Posterpole
 				{ name = "Posterpole", colorscheme = "posterpole" },
 				-- Neomodern
@@ -535,8 +539,8 @@ return {
 				{ name = "Starry Palenight", colorscheme = "palenight" },
 				{ name = "Starry Limestone", colorscheme = "limestone" },
 				{ name = "Starry Oceanic", colorscheme = "oceanic" },
-				-- maxmx03 Solarized
-				{ name = "Solarized Spring", colorscheme = "solarized" },
+				-- maxmx03-solarized also registers "solarized", colliding with
+				-- shaunsingh/solarized.nvim above; it cannot be selected separately.
 				-- Neopywal
 				{ name = "Neopywal", colorscheme = "neopywal" },
 				{ name = "Neopywal Dark", colorscheme = "neopywal-dark" },
@@ -557,15 +561,16 @@ return {
 				{ name = "Silk Circuit", colorscheme = "silkcircuit" },
 				-- Boo
 				{ name = "Boo", colorscheme = "boo" },
-				{ name = "Boo Radioactive", colorscheme = "radioactive" },
+				{ name = "Boo Radioactive", colorscheme = "radioactive_waste" },
 				{ name = "Boo Sunset Cloud", colorscheme = "sunset_cloud" },
-				{ name = "Boo Gloombuddy", colorscheme = "gloombuddy" },
+				{ name = "Boo Crimson Moonlight", colorscheme = "crimson_moonlight" },
+				{ name = "Boo Forest Stream", colorscheme = "forest_stream" },
 				-- Zephyr
 				{ name = "Zephyr", colorscheme = "zephyr" },
 				-- Highlite
 				{ name = "Highlite", colorscheme = "highlite" },
-				{ name = "Vendetta", colorscheme = "vendetta" },
-				{ name = "Bubblegum", colorscheme = "bubblegum" },
+				{ name = "Highlite Molokai", colorscheme = "highlite-molokai" },
+				{ name = "Highlite Iceberg", colorscheme = "highlite-iceberg" },
 				-- Cobalt2
 				{ name = "Cobalt2", colorscheme = "cobalt2" },
 				-- Zenburn

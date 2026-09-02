@@ -193,7 +193,7 @@ return {
 				-- Only format if an LSP client with formatting capability is attached
 				local clients = vim.lsp.get_clients({ bufnr = 0 })
 				for _, client in ipairs(clients) do
-					if client.supports_method("textDocument/formatting") then
+					if client:supports_method("textDocument/formatting") then
 						vim.lsp.buf.format({ async = false })
 						return
 					end

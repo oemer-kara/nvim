@@ -62,7 +62,11 @@ return {
 				"<leader>gg",
 				function()
 					local Terminal = require("toggleterm.terminal").Terminal
-					local git_root = vim.fn.system("git -C " .. vim.fn.expand("%:p:h") .. " rev-parse --show-toplevel")
+					-- List form, not a concatenated string: it bypasses the shell, so
+					-- paths containing spaces work. The string form split on the first
+					-- space, which breaks on any "C:\Users\First Last\..." path.
+					local git_root =
+						vim.fn.system({ "git", "-C", vim.fn.expand("%:p:h"), "rev-parse", "--show-toplevel" })
 					git_root = vim.fn.trim(git_root)
 
 					if vim.v.shell_error ~= 0 then

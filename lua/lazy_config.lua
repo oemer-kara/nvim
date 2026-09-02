@@ -44,6 +44,10 @@ lazy.setup({
         enabled = true, -- Enable change detection
         notify = false, -- Disable notifications about config changes
     },
+    -- No plugin here requires luarocks (checkhealth confirms this), but lazy
+    -- still probes for a hererocks install and reports its absence as an ERROR.
+    -- Turning it off removes that false positive from :checkhealth.
+    rocks = { enabled = false },
     -- Performance settings
     performance = {
         rtp = {
